@@ -8,27 +8,30 @@ provider "aws" {
 	region = "us-east-2"
 }
 
+
+
+
 #############Security Group##############
 
-resource "aws_iam_group" "security-team" {
-  name = "security-team"
+resource "aws_iam_group" "security_team" {
+  name = "security_team"
   path = "/users/"
 }
 
-resource "aws_iam_group_membership" "security-team" {
-  name = "security-team"
+resource "aws_iam_group_membership" "security_team" {
+  name = "security_team"
 
   users = [
 	aws_iam_user.UserOne.name,
 	aws_iam_user.UserTwo.name,
   ]
 
-  group = aws_iam_group.security-team.name
+  group = aws_iam_group.security_team.name
 }
 
-resource "aws_iam_group_policy" "my_developer_policy" {
-  name  = "my_developer_policy"
-  group = aws_iam_group.my_developers.name
+resource "aws_iam_group_policy" "security_team_policy" {
+  name  = "security_team_policy"
+  group = aws_iam_group.security_team.name
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
