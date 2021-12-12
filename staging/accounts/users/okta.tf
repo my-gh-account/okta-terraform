@@ -1,4 +1,11 @@
 terraform {
+  backend "s3" {
+    key            = "/staging/accounts/users/terraform.tfstate"
+  }
+}
+
+
+terraform {
   required_providers {
     okta = {
       source  = "okta/okta"
