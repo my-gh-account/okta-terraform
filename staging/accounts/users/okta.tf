@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    key            = "/staging/accounts/users/terraform.tfstate"
+    key            = "staging/accounts/users/terraform.tfstate"
   }
 }
 
