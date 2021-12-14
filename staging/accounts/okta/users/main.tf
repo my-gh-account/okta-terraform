@@ -14,7 +14,15 @@ terraform {
 }
 
 
-resource "okta_app_saml" "aws_federation" {
+
+
+#################### Okta Admin Roles #######################
+
+
+
+resource "okta_group_role" "SuperAdmins" {
+  group_id  = okta_group.OktaSuperAdmin.id
+  role_type = "SUPER_ADMIN"
 }
 
 
@@ -22,117 +30,72 @@ resource "okta_app_saml" "aws_federation" {
 
 
 
-##################### User Types #############################
 
+###################### Okta Groups #############################
 
-
-resource "okta_user_type" "super_admin" {
-  name         = "Super_Admin"
-  display_name = "Super_Admin"
-  description  = "Superest of Admins"
-
+resource "okta_group" "OktaSuperAdmin" {
+  name        = "OktaSuperAdmin"
+  description = "OktaSuperAdmin"
 }
 
-#################### Custom Properties  ############################
 
-resource "okta_user_schema_property" "awesomeness" {
-  index  = "awesomeness"
-  title  = "awesomeness"
-  type   = "string"
-  master = "PROFILE_MASTER"
+resource "okta_group_memberships" "OktaSuperAdmin" {
+  group_id = okta_group.OktaSuperAdmin.id
+  users = [
+	okta_user.PatrickPutman.id
+    ]
 }
 
 
 
-###################  Users  #########################################
 
 
-###################  UserOne ########################################
+
+###################### AWS Groups ###############################
+
+resource "okta_group" "AWSFullAccess" {
+  name        = "aws#security-team#FullAccess#975678609170"
+  description = "Security Team"
+}
 
 
-resource "okta_user" "UserOne" {
-  first_name = "User"
-  last_name  = "One"
-  login      = "userone@testemail.com"
-  email      = "userone@testemail.com"
-  custom_profile_attributes = jsonencode({ "awesomeness" = "super_awesome_dude" })
+resource "okta_group_memberships" "AWSFullAccess" {
+  group_id = okta_group.AWSFullAccess.id
+  users = [
+	okta_user.PatrickPutman.id
+    ]
+}
+
+
+
+
+resource "okta_group" "S3Full" {
+  name        = "aws#storage-team#S3Full#975678609170"
+  description = "StorageTeam"
+}
+
+resource "okta_group_memberships" "S3Full" {
+  group_id = okta_group.S3Full.id
+  users = [   
+	okta_user.PatrickPutman.id
+  ]
+}
+
+
+
+
+
+################### Users ######################################
+
+
+resource "okta_user" "PatrickPutman" {
+  first_name = "Patrick"
+  last_name  = "Putman"
+  login      = "putman.patrick@gmail.com"
+  email      = "putman.patrick@gmail.com"
   lifecycle {
-    ignore_changes = [group_memberships]
+    ignore_changes = [group_memberships, admin_roles]
   }
-
-
-  depends_on = [okta_user_schema_property.awesomeness]
 }
-
-
-
-
-
-
-################### User Two #######################################
-
-
-
-
-resource "okta_user" "UserTwo" {
-  first_name = "User"
-  last_name  = "Two"
-  login      = "usertwo@testemail.com"
-  email      = "usertwo@testemail.com"
-  custom_profile_attributes = jsonencode({ "awesomeness" = "super_awesome_dude" })
-  lifecycle {
-    ignore_changes = [group_memberships]
-  }
-
-
-  depends_on = [okta_user_schema_property.awesomeness]
-}
-
-resource "okta_user" "UserThree" {
-  first_name = "User"
-  last_name  = "Three"
-  login      = "userthree@testemail.com"
-  email      = "userthree@testemail.com"
-  custom_profile_attributes = jsonencode({ "awesomeness" = "super_awesome_dude" })
-  lifecycle {
-    ignore_changes = [group_memberships]
-  }
-
-
-  depends_on = [okta_user_schema_property.awesomeness]
-}
-
-resource "okta_user" "UserFour" {
-  first_name = "User"
-  last_name  = "Four"
-  login      = "userfour@testemail.com"
-  email      = "userfour@testemail.com"
-  custom_profile_attributes = jsonencode({ "awesomeness" = "super_awesome_dude" })
-  lifecycle {
-    ignore_changes = [group_memberships]
-  }
-
-
-  depends_on = [okta_user_schema_property.awesomeness]
-}
-
-resource "okta_user" "UserFive" {
-  first_name = "User"
-  last_name  = "Five"
-  login      = "userfive@testemail.com"
-  email      = "userfive@testemail.com"
-  custom_profile_attributes = jsonencode({ "awesomeness" = "super_awesome_dude" })
-
-
-  lifecycle {
-    ignore_changes = [group_memberships]
-  }
-
-
-  depends_on = [okta_user_schema_property.awesomeness]
-}
-
-
-
 
 
