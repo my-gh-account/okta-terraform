@@ -3,17 +3,24 @@ variable "cluster_name" {
   type        = string
 }
 
+
+
+#variable "apps" {
+#  type = list(
+#    object({
+#          apps = object({
+#            rule = string
+#          })
+#      	})
+#   )
+#}
+#
+
+
+
 variable "apps" {
-  type = list(object({
-    rule = string
-   }))
+  type = map(
+       map(string)
+  )
 }
 
-variable "okta-users" {
-  type = list(object({
-      first_name = string
-      last_name  = string
-      login      = string
-      email      = string
-      }))
-}

@@ -1,35 +1,27 @@
-
-
-#################### Okta Admin Roles #######################
-
-
-
-resource "okta_group_role" "SuperAdmins" {
-  group_id  = okta_group.OktaSuperAdmin.id
-  role_type = "SUPER_ADMIN"
+terraform {
+  required_providers {
+    okta = {
+      source  = "okta/okta"
+      version = "~> 3.20"
+    }
+  }
 }
 
 
 
-
-
-
-
-###################### Okta Groups #############################
-
-#resource "okta_group" "OktaSuperAdmin" {
-#  name        = "${var.cluster-name}-SuperAdmin"
-#  description = "OktaSuperAdmin"
+##################### Okta Admin Roles #######################
+#
+#
+#
+#resource "okta_group_role" "SuperAdmins" {
+#  group_id  = okta_group.OktaSuperAdmin.id
+#  role_type = "SUPER_ADMIN"
 #}
 #
-#
-#resource "okta_group_memberships" "OktaSuperAdmin" {
-#  group_id = okta_group.OktaSuperAdmin.id
-#  users = [
-#	okta_user.PatrickPutman.id
-#    ]
-#}
-#
+
+
+
+
 
 
 resource "okta_group" "app" {
@@ -40,7 +32,7 @@ resource "okta_group" "app" {
 }
 
 resource "okta_group_rule" "app" {
- for_each = local.apps
+ for_each = var.apps
     name              = "rbac-app-${each.key}"
     status            = "ACTIVE"
     group_assignments = [okta_group.app[each.key].id]
@@ -84,8 +76,5 @@ resource "okta_group_rule" "app" {
 #	okta_user.PatrickPutman.id
 #  ]
 #}
-#
-#
-#
 
 
