@@ -8,11 +8,24 @@ terraform {
 }
 
 
+  data "terraform_remote_state" "policies" {
+  backend = "s3"
+
+  config = {
+    bucket = var.backend_s3_bucket
+    key    = "staging/accounts/aws-policies/terraform.tfstate"
+    region = var.backend_s3_bucket_region
+  }
+}
+
+
+
+
 data "okta_groups" "okta_groups" {}
 data "aws_caller_identity" "current" {}
-data "aws_iam_policy" "example" {
+data "aws_iam_policy" "valid_policies" {
   count = length(local.aws_group_names) 
-  arn = "arn:aws:iam::aws:policy/${(element(split("-", local.aws_group_names[count.index]), 3))}"
+  name = (element(split("-", local.aws_group_names[count.index]), 3))
 }
 
 
@@ -89,10 +102,13 @@ resource "okta_app_group_assignments" "AWSFederationGroups" {
 
 
 resource "aws_iam_role" "okta-role" {
-  count	       = length(local.aws_group_names)
-  name                = "${(element(split("-", local.aws_group_names[count.index]), 3))}"
+  count	              = length(data.aws_iam_policy.valid_policies)
+
+  name                = data.aws_iam_policy.valid_policies[count.index].name
+
+#"${(element(split("-", local.aws_group_names[count.index]), 3))}"
   assume_role_policy  = data.aws_iam_policy_document.instance-assume-role-policy.json
-  managed_policy_arns = ["arn:aws:iam::aws:policy/${(element(split("-", local.aws_group_names[count.index]), 3))}"]
+  managed_policy_arns = [data.aws_iam_policy.valid_policies[count.index].arn]
 }
 
 

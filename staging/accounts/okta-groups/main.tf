@@ -19,14 +19,15 @@ module "okta-groups" {
   cluster_name  = "okta-groups-staging"
   
   apps = {
-   }
     "Salesforce"            = { rule = "user.department == \"Sales\" OR user.department == \"Marketing\""},
     "aws-384338-FullAccess" = { rule = "user.email == \"putman.patrick@gmail.com\""},
     "aws-test-FullAccess"   = { rule = "user.email == \"putman.patrick@gmail.com\""},
     "aws-975678609170-AdministratorAccess" = { rule = join(" ", [
-      "user.email == \"putman.patrick@gmail.com\" OR"   # Admin
+      "user.email == \"putman.patrick@gmail.com\" OR",   # Admin
       "user.email == \"sally@example.com\""             # CTO
       ])
       },
     "aws-975678609170-AmazonS3FullAccess" = { rule = "user.email == \"putman.patrick@gmail.com\""},
+    "aws-975678609170-test_policy2" = { rule = "user.email == \"putman.patrick@gmail.com\""},
+    }
 }
