@@ -8,15 +8,15 @@ terraform {
 }
 
 
-  data "terraform_remote_state" "policies" {
-  backend = "s3"
-
-  config = {
-    bucket = var.backend_s3_bucket
-    key    = "staging/accounts/aws-policies/terraform.tfstate"
-    region = var.backend_s3_bucket_region
-  }
-}
+#  data "terraform_remote_state" "policies" {
+#  backend = "s3"
+#
+#  config = {
+#    bucket = var.backend_s3_bucket
+#    key    = "staging/accounts/aws-policies/terraform.tfstate"
+#    region = var.backend_s3_bucket_region
+#  }
+#}
 
 
 
@@ -103,10 +103,7 @@ resource "okta_app_group_assignments" "AWSFederationGroups" {
 
 resource "aws_iam_role" "okta-role" {
   count	              = length(data.aws_iam_policy.valid_policies)
-
   name                = data.aws_iam_policy.valid_policies[count.index].name
-
-#"${(element(split("-", local.aws_group_names[count.index]), 3))}"
   assume_role_policy  = data.aws_iam_policy_document.instance-assume-role-policy.json
   managed_policy_arns = [data.aws_iam_policy.valid_policies[count.index].arn]
 }
