@@ -1,10 +1,4 @@
 terraform {
-  backend "s3" {
-    key = "staging/accounts/okta/aws-app/terraform.tfstate"
-  }
-}
-
-terraform {
   required_providers {
     okta = {
       source  = "okta/okta"
@@ -13,34 +7,51 @@ terraform {
   }
 }
 
-provider "aws" {
-  region = "us-east-2"
+
+data "okta_groups" "okta_groups" {}
+data "aws_caller_identity" "current" {}
+data "aws_iam_policy" "example" {
+  count = length(local.aws_group_names) 
+  arn = "arn:aws:iam::aws:policy/${(element(split("-", local.aws_group_names[count.index]), 3))}"
 }
 
 
 
+locals {
+ account_ids                   = [ data.aws_caller_identity.current.account_id ]
+ aws_groups                    = [ for group in data.okta_groups.okta_groups.groups : group if ( length(regexall("(?i)aws", element(split("-", group.name), 1))) > 0) && contains(local.account_ids, element(split("-", group.name), 2))  ]
+ aws_group_ids                 = local.aws_groups[*].id
+ aws_group_names               = local.aws_groups[*].name
+}
 
 
-
-data "terraform_remote_state" "aws_group_memberships" {
-  backend = "s3"
-
-  config = {
-    bucket = "terraform-okta-backend-pputman"
-    region = "us-east-2"
-    key    = "staging/accounts/okta/users/terraform.tfstate"
+resource "aws_iam_saml_provider" "saml_provider" {
+  name                   = var.saml_provider
+  saml_metadata_document = okta_app_saml.aws_federation.metadata
+  tags                   = {
+     "Name"              = "okta sso saml provider"
   }
 }
 
+data "aws_iam_policy_document" "instance-assume-role-policy" {
+  statement {
+    actions = ["sts:AssumeRoleWithSAML"]
 
+    principals {
+      type        = "Federated"
+      identifiers = [aws_iam_saml_provider.saml_provider.arn] 
+    }
 
+    condition {
+      test     = "StringEquals"
+      variable = "SAML:aud"
 
-resource "aws_iam_saml_provider" "okta_sso" {
-  name                   = "OktaSSO"
-  saml_metadata_document = okta_app_saml.aws_federation.metadata
+      values = [
+        "https://signin.aws.amazon.com/saml"
+      ]
+    }
+  }
 }
-
-
 
 resource "okta_app_saml" "aws_federation" {
   label             = "AWS Account Federation"
@@ -50,37 +61,38 @@ resource "okta_app_saml" "aws_federation" {
   }
 }
 
-
 resource "okta_app_saml_app_settings" "aws_federation_settings" {
   app_id = okta_app_saml.aws_federation.id
   settings = jsonencode(
     {
-      "appFilter" : "okta",
+      "appFilter" : "${var.app_filter}",
       "awsEnvironmentType" : "aws.amazon",
-      "groupFilter" : "^aws\\#\\S+\\#(?{{role}}[\\w\\-]+)\\#(?{{accountid}}\\d+)$"
+      "groupFilter" : "^app\\-aws\\-(?{{accountid}}\\d+)\\-(?{{role}}[\\w\\-]+)$"
       "joinAllRoles" : true,
       "loginURL" : "https://console.aws.amazon.com/ec2/home",
-      "roleValuePattern" : "arn:aws:iam::$${accountid}:saml-provider/OktaSSO,arn:aws:iam::$${accountid}:role/$${role}",
+      "roleValuePattern" : "arn:aws:iam::$${accountid}:saml-provider/${var.saml_provider},arn:aws:iam::$${accountid}:role/$${role}",
       "sessionDuration" : 3600,
       "useGroupMapping" : true,
-      "identityProviderArn" : aws_iam_saml_provider.okta_sso.arn,
+      "identityProviderArn" : "aws_iam_saml_provider.${var.saml_provider}.arn",
     }
   )
 }
 
-
 resource "okta_app_group_assignments" "AWSFederationGroups" {
   app_id = okta_app_saml.aws_federation.id
 
+  for_each = toset(local.aws_group_ids)
   group {
-    id       = data.terraform_remote_state.aws_group_memberships.outputs.AWSFullAccessMembership
-    priority = 1
+    id = each.key
   }
+}
 
-  group {
-    id       = data.terraform_remote_state.aws_group_memberships.outputs.S3FullMembership
-    priority = 2
-  }
+
+resource "aws_iam_role" "okta-role" {
+  count	       = length(local.aws_group_names)
+  name                = "${(element(split("-", local.aws_group_names[count.index]), 3))}"
+  assume_role_policy  = data.aws_iam_policy_document.instance-assume-role-policy.json
+  managed_policy_arns = ["arn:aws:iam::aws:policy/${(element(split("-", local.aws_group_names[count.index]), 3))}"]
 }
 
 

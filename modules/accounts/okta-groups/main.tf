@@ -8,22 +8,6 @@ terraform {
 }
 
 
-
-##################### Okta Admin Roles #######################
-#
-#
-#
-#resource "okta_group_role" "SuperAdmins" {
-#  group_id  = okta_group.OktaSuperAdmin.id
-#  role_type = "SUPER_ADMIN"
-#}
-#
-
-
-
-
-
-
 resource "okta_group" "app" {
  for_each = var.apps
     name        = "app-${each.key}"
@@ -38,43 +22,8 @@ resource "okta_group_rule" "app" {
     group_assignments = [okta_group.app[each.key].id]
     expression_type   = "urn:okta:expression:1.0"
     expression_value  = each.value.rule
+    users_excluded    = []
 }
 
-
-
-
-
-
-
-
-####################### AWS Groups ###############################
-#
-#resource "okta_group" "AWSFullAccess" {
-#  name        = "aws#security-team#FullAccess#975678609170"
-#  description = "Security Team"
-#}
-#
-#
-#resource "okta_group_memberships" "AWSFullAccess" {
-#  group_id = okta_group.AWSFullAccess.id
-#  users = [
-#	okta_user.PatrickPutman.id
-#    ]
-#}
-#
-#
-#
-#
-#resource "okta_group" "S3Full" {
-#  name        = "aws#storage-team#S3Full#975678609170"
-#  description = "StorageTeam"
-#}
-#
-#resource "okta_group_memberships" "S3Full" {
-#  group_id = okta_group.S3Full.id
-#  users = [   
-#	okta_user.PatrickPutman.id
-#  ]
-#}
 
 

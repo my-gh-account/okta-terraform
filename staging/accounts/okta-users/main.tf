@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    key = "staging/accounts/okta-groups/terraform.tfstate"
+    key = "staging/accounts/okta-users/terraform.tfstate"
   }
 }
 
@@ -15,7 +15,7 @@ terraform {
 
 module "okta-users" {
   source = "../../../modules/accounts/okta-users/"
-  cluster_name                         = "okta-users-staging"
+  cluster_name = "okta-users-staging"
   okta-users = [{
     first_name = "Patrick"
     last_name  = "Putman"
@@ -27,6 +27,12 @@ module "okta-users" {
     last_name  = "Johnson"
     login      = "bob@example.com"
     email      = "bob@example.com"
+   },
+   {
+    first_name = "Sally"
+    last_name  = "Parker"
+    login      = "sally@example.com"
+    email      = "sally@example.com"
    },
   ]
 }

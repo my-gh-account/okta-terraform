@@ -11,3 +11,7 @@
 #    for user in okta_group_users : bd.name
 #  ])
 #}
+
+#output "okta_groups" {
+#  value = okta_groups.app
+#}

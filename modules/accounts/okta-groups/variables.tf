@@ -3,21 +3,6 @@ variable "cluster_name" {
   type        = string
 }
 
-
-
-#variable "apps" {
-#  type = list(
-#    object({
-#          apps = object({
-#            rule = string
-#          })
-#      	})
-#   )
-#}
-#
-
-
-
 variable "apps" {
   type = map(
        map(string)

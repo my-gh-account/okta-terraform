@@ -1,23 +1,11 @@
 terraform {
-  backend "s3" {
-    key            = "staging/accounts/aws-iam/roles/terraform.tfstate"
+  required_providers {
+    okta = {
+      source  = "okta/okta"
+      version = "~> 3.20"
+    }
   }
 }
-
-#terraform {
-#  required_providers {
-#    okta = {
-#      source  = "okta/okta"
-#      version = "~> 3.20"
-#    }
-#  }
-#}
-
-
-provider "aws" {
-	region = "us-east-2"
-}
-
 data "terraform_remote_state" "okta_sso_arn" {
   backend = "s3"
 
@@ -52,15 +40,15 @@ data "aws_iam_policy_document" "instance-assume-role-policy" {
 
 
 resource "aws_iam_role" "FullAccess" {
-  name                = "FullAccess"
+  name                = var.FullAWSAccess
   assume_role_policy  = data.aws_iam_policy_document.instance-assume-role-policy.json
-  managed_policy_arns = ["arn:aws:iam::aws:policy/AdministratorAccess"] 
+  managed_policy_arns = ["arn:aws:iam::aws:policy/${var.FullAWSAccess}"] 
 }
 
 
 
 resource "aws_iam_role" "S3Full" {
-  name                = "S3Full"
+  name                = var.FullS3Access
   assume_role_policy  = data.aws_iam_policy_document.instance-assume-role-policy.json
-  managed_policy_arns = ["arn:aws:iam::aws:policy/AmazonS3FullAccess"] 
+  managed_policy_arns = ["arn:aws:iam::aws:policy/${var.FullS3access"] 
 }
