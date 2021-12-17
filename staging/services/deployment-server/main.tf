@@ -13,8 +13,4 @@ module "deployment-server" {
   cluster_name = "deployment-server-staging"
 }
 
-output "instance_ip" {
-  description = "The public ip for ssh access"
-  value       = module.deployment-server.instance_ip
-}
 
