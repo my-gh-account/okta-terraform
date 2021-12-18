@@ -1,7 +1,7 @@
-variable "cluster_name" {
-  description = "The name to use for all the cluster resources"
-  type        = string
-}
+#-------------------------------------------------------------------------------------------------------------------------------------
+# IAM POLICY LIST
+# A list of objects, with a json encoded IAM Policy as the last parameter
+#-------------------------------------------------------------------------------------------------------------------------------------
 
 
 variable "policies" {

@@ -1,3 +1,8 @@
+#-------------------------------------------------------------------------------------------------------------------------------------
+# OKTA PROVIDER VERSION REQUIREMENTS 
+# Okta's resource requires you specify this version to work
+#-------------------------------------------------------------------------------------------------------------------------------------
+
 terraform {
   required_providers {
     okta = {
@@ -7,26 +12,19 @@ terraform {
   }
 }
 
-provider "vault" {
-  address = var.vault_address
-}
 
-data "vault_generic_secret" "okta_creds" {
-  path = var.vault_path
-}
 
-provider "okta" {
-  org_name  = var.okta_org_name
-  base_url  = var.okta_base_url
-  api_token = var.okta_api_token
-}
+#-------------------------------------------------------------------------------------------------------------------------------------
+# OKTA DYNAMIC USER CREATOR 
+# Speciy user in variable in live module to create.
+#-------------------------------------------------------------------------------------------------------------------------------------
 
 resource "okta_user" "user" {
-  count      = length(var.okta-users)
-  first_name = var.okta-users[count.index].first_name
-  last_name  = var.okta-users[count.index].last_name
-  login      = var.okta-users[count.index].login
-  email      = var.okta-users[count.index].email
+  count      = length(var.okta_users)
+  first_name = var.okta_users[count.index].first_name
+  last_name  = var.okta_users[count.index].last_name
+  login      = var.okta_users[count.index].login
+  email      = var.okta_users[count.index].email
   lifecycle {
     ignore_changes = [group_memberships, admin_roles]
   }

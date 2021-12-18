@@ -1,3 +1,9 @@
+#-------------------------------------------------------------------------------------------------------------------------------------
+# IAM POLICY GENERATOR 
+# This Resource will generate policies from a list of objects, defined in variables file
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+
 resource "aws_iam_policy" "policy" {
   for_each = { for policy in var.policies : policy.name => policy }
 

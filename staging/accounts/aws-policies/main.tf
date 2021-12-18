@@ -10,8 +10,7 @@ provider "aws" {
 }
 
 module "aws-policies" {
-  source       = "../../../modules/accounts/aws-policies/"
-  cluster_name = "aws-policies-staging"
+  source = "../../../modules/accounts/aws-policies/"
   policies = [
     {
       name        = "test_policy"
