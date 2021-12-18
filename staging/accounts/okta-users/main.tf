@@ -63,12 +63,12 @@ module "okta-users" {
       login      = "putman.patrick@gmail.com"
       email      = "putman.patrick@gmail.com"
     },
-    {
-      first_name = "Bob"
-      last_name  = "Johnson"
-      login      = "bob@example.com"
-      email      = "bob@example.com"
-    },
+#    {
+#      first_name = "Bob"
+#      last_name  = "Johnson"
+#      login      = "bob@example.com"
+#      email      = "bob@example.com"
+#    },
     {
       first_name = "Sally"
       last_name  = "Parker"

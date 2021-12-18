@@ -20,13 +20,16 @@ terraform {
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 resource "okta_user" "user" {
-  count      = length(var.okta_users)
-  first_name = var.okta_users[count.index].first_name
-  last_name  = var.okta_users[count.index].last_name
-  login      = var.okta_users[count.index].login
-  email      = var.okta_users[count.index].email
+   for_each    = { for user in var.okta_users : user.login => user } 
+   first_name  = each.value.first_name
+   last_name   = each.value.last_name
+   login       = each.value.login
+   email       = each.value.email
   lifecycle {
     ignore_changes = [group_memberships, admin_roles]
   }
 }
 
+output "okta_user" {
+  value = toset(var.okta_users)
+}
