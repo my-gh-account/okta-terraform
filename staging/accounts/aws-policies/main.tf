@@ -10,48 +10,48 @@ provider "aws" {
 }
 
 module "aws-policies" {
-  source        = "../../../modules/accounts/aws-policies/"
-  cluster_name  = "aws-policies-staging"
-  policies	= [
-		    {
-                    name        = "test_policy"
-		    description = "a testing policy"
-		    path	= "/"
-                    tags        = {
-	              name	= "PatrickPolicy"
-                    }
-                    policy      = jsonencode({
-                      "Version": "2012-10-17",
-                      "Statement": [{
-                        "Effect": "Allow",
-                        "Action": [
-                          "directconnect:Describe*",
-                          "directconnect:List*",
-                          "ec2:DescribeVpnGateways",
-                          "ec2:DescribeTransitGateways"
-                         ],
-                        "Resource": "*"
-                       }]
-                     })
-                   },
+  source       = "../../../modules/accounts/aws-policies/"
+  cluster_name = "aws-policies-staging"
+  policies = [
+    {
+      name        = "test_policy"
+      description = "a testing policy"
+      path        = "/"
+      tags = {
+        name = "PatrickPolicy"
+      }
+      policy = jsonencode({
+        "Version" : "2012-10-17",
+        "Statement" : [{
+          "Effect" : "Allow",
+          "Action" : [
+            "directconnect:Describe*",
+            "directconnect:List*",
+            "ec2:DescribeVpnGateways",
+            "ec2:DescribeTransitGateways"
+          ],
+          "Resource" : "*"
+        }]
+      })
+    },
 
-		   {
-                    name        = "test_policy2"
-		    description = "a testing policy"
-		    path	= "/"
-                    tags        = {
-	              name	= "PatrickPolicy2"
-                    }
-                    policy      = jsonencode({
-                      "Version": "2012-10-17",
-                      "Statement": [{
-                        "Effect": "Allow",
-                        "Action": [
-                          "*"
-                        ],
-                        "Resource": "*"
-                      }]
-                    })
-                 }
-	      ]
+    {
+      name        = "test_policy2"
+      description = "a testing policy"
+      path        = "/"
+      tags = {
+        name = "PatrickPolicy2"
+      }
+      policy = jsonencode({
+        "Version" : "2012-10-17",
+        "Statement" : [{
+          "Effect" : "Allow",
+          "Action" : [
+            "*"
+          ],
+          "Resource" : "*"
+        }]
+      })
+    }
+  ]
 }

@@ -1,17 +1,3 @@
-#output "AWSFullAccessMembership" {
-#	value = okta_group_memberships.AWSFullAccess.id
-#}
-#
-#output "S3FullMembership" {
-#	value = okta_group_memberships.S3Full.id
-#}
-#
-#output "user_name" {
-#  value = toset([
-#    for user in okta_group_users : bd.name
-#  ])
-#}
-
-#output "okta_groups" {
-#  value = okta_groups.app
-#}
+output "okta_creds" {
+  value = data.vault_generic_secret.okta_creds
+}

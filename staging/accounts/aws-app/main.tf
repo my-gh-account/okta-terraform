@@ -4,24 +4,21 @@ terraform {
   }
 }
 
-terraform {
-  required_providers {
-    okta = {
-      source  = "okta/okta"
-      version = "~> 3.20"
-    }
-  }
-}
-
 provider "aws" {
   region = "us-east-2"
 }
 
 module "aws-app" {
-  source                   = "../../../modules/accounts/aws-app/"
-  cluster_name             = "aws-app-staging"
-  backend_s3_bucket        = "terraform-okta-backend-pputman"
-  backend_s3_bucket_region = "us-east-2"
-  app_filter	           = "okta"
-  saml_provider            = "Okta-SSO"
+  source       = "../../../modules/accounts/aws-app/"
+  cluster_name = "aws-app-staging"
+
+  vault_address = "http://127.0.0.1:8200"
+  vault_path    = "secret/okta_creds"
+
+  okta_org_name  = "teramindpputman"
+  okta_base_url  = "okta.com"
+  okta_api_token = module.aws-app.okta_creds.data["api_token"]
+
+  app_filter    = "okta"
+  saml_provider = "Okta-SSO"
 }
