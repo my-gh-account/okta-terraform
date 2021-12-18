@@ -157,10 +157,14 @@ resource "okta_app_group_assignments" "AWSFederationGroups" {
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 resource "aws_iam_role" "okta-role" {
-  count               = length(data.aws_iam_policy.valid_policies)
-  name                = data.aws_iam_policy.valid_policies[count.index].name
-  assume_role_policy  = data.aws_iam_policy_document.instance-assume-role-policy.json
-  managed_policy_arns = [data.aws_iam_policy.valid_policies[count.index].arn]
+  for_each             = { for policy in data.aws_iam_policy.valid_policies : policy.name => policy.arn }
+  name                 = each.key
+  assume_role_policy   = data.aws_iam_policy_document.instance-assume-role-policy.json
+  managed_policy_arns  = [each.value]
+  tags = {
+    "Name"             = each.key
+  }
+
 }
 
 

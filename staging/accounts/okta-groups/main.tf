@@ -76,6 +76,6 @@ module "okta-groups" {
       ])
     },
     "aws-975678609170-test_policy2" = { rule = "user.email == \"putman.patrick@gmail.com\"" },
-    "aws-975678609170-test_poliyc"  = { rule = "user.email == \"putman.patrick@gmail.com\"" },
+    "aws-975678609170-test_policy"  = { rule = "user.email == \"putman.patrick@gmail.com\"" },
   }
 }
