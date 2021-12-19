@@ -4,7 +4,7 @@
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 terraform {
-  required_version = "~> 1.1.0" 
+  required_version = "~> 1.1.0"
   required_providers {
     okta = {
       source  = "okta/okta"
@@ -20,15 +20,15 @@ terraform {
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 resource "okta_user" "user" {
-   for_each    = { for user in var.okta_users : user.login => user } 
-   first_name  = each.value.first_name
-   last_name   = each.value.last_name
-   login       = each.value.login
-   email       = each.value.email
+  for_each   = { for user in var.okta_users : user.login => user }
+  first_name = each.value.first_name
+  last_name  = each.value.last_name
+  login      = each.value.login
+  email      = each.value.email
 
-   lifecycle {
+  lifecycle {
     ignore_changes = [group_memberships, admin_roles]
-   }
+  }
 }
 
 output "okta_user" {

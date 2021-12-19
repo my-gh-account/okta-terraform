@@ -3,7 +3,6 @@
 # A list of objects, with a json encoded IAM Policy as the last parameter
 #-------------------------------------------------------------------------------------------------------------------------------------
 
-
 variable "policies" {
   type    = list(object({
     description = string
