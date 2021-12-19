@@ -10,7 +10,6 @@ terraform {
 }
 
 
-
 #-------------------------------------------------------------------------------------------------------------------------------------
 # OKTA PROVIDER VERSION REQUIREMENTS 
 # Okta's resource requires you specify this version to work
@@ -24,7 +23,6 @@ terraform {
     }
   }
 }
-
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------
@@ -52,6 +50,7 @@ provider "okta" {
   api_token = data.vault_generic_secret.okta_creds.data["api_token"]
 }
 
+
 #-------------------------------------------------------------------------------------------------------------------------------------
 # OKTA RBAC RULES TO GROUP MAPPING 
 # This is where you can specify the name of the app you're giving access to, along with the RBAC rule.  Inside the okta-groups module
@@ -61,18 +60,17 @@ provider "okta" {
 # iam roles accidentally
 #-------------------------------------------------------------------------------------------------------------------------------------
 
-
 module "okta-groups" {
-  source       = "../../../modules/accounts/okta-groups/"
+  source = "../../../modules/accounts/okta-groups/"
 
   apps = {
     "Salesforce"            = { rule = "user.department == \"Sales\" OR user.department == \"Marketing\"" },
     "aws-384338-FullAccess" = { rule = "user.email == \"putman.patrick@gmail.com\"" },
     "aws-test-FullAccess"   = { rule = "user.email == \"putman.patrick@gmail.com\"" },
     "aws-975678609170-AdministratorAccess" = { rule = join(" ", [ # This join gives us a better way to specify larger, more complex rules on multiple lines.
-            "user.email == \"putman.patrick@gmail.com\" OR",      # Admin
-            "user.email == \"sally@example.com\"        OR",      # CTO      
-            "user.email == \"bob@example.com\""
+      "user.email == \"putman.patrick@gmail.com\" OR",            # Admin
+      "user.email == \"sally@example.com\"        OR",            # CTO      
+      "user.email == \"bob@example.com\""
       ])
     },
     "aws-975678609170-test_policy2" = { rule = "user.email == \"putman.patrick@gmail.com\"" },
