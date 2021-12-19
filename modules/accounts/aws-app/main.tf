@@ -1,6 +1,6 @@
 #-------------------------------------------------------------------------------------------------------------------------------------
-# OKTA PROVIDER VERSION REQUIREMENTS 
-# Okta's resource requires you specify this version to work
+# VERSION REQUIREMENTS 
+# Versions of Teraform and its providers pinned for stability
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 terraform {
@@ -24,11 +24,8 @@ terraform {
 # This along with the  below local variables will  filter these groups with those designated for the aws app
 #-------------------------------------------------------------------------------------------------------------------------------------
 
-
 data "okta_groups" "okta_groups" {}
 data "aws_caller_identity" "current" {}
-
-
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------
@@ -49,11 +46,6 @@ data "aws_iam_policy" "valid_policies" {
   count = length(local.aws_group_names)
   name  = (element(split("-", local.aws_group_names[count.index]), 3))
 }
-
-
-
-
-
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------
@@ -89,8 +81,6 @@ data "aws_iam_policy_document" "instance-assume-role-policy" {
     }
   }
 }
-
-
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------

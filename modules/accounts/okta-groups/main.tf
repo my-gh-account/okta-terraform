@@ -1,6 +1,6 @@
 #-------------------------------------------------------------------------------------------------------------------------------------
-# OKTA PROVIDER VERSION REQUIREMENTS 
-# Okta's resource requires you specify this version to work
+# VERSION REQUIREMENTS 
+# Versions of Teraform and its providers pinned for stability
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 terraform {

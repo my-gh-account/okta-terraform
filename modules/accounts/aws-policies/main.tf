@@ -1,3 +1,8 @@
+#-------------------------------------------------------------------------------------------------------------------------------------
+# VERSION REQUIREMENTS 
+# Versions of Teraform and its providers pinned for stability
+#-------------------------------------------------------------------------------------------------------------------------------------
+
 terraform {
   required_version = "~> 1.1.0" 
   required_providers {
@@ -13,7 +18,6 @@ terraform {
 # IAM POLICY GENERATOR 
 # This Resource will generate policies from a list of objects, defined in variables file
 #-------------------------------------------------------------------------------------------------------------------------------------
-
 
 resource "aws_iam_policy" "policy" {
   for_each = { for policy in var.policies : policy.name => policy }

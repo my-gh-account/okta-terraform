@@ -1,6 +1,6 @@
 #-------------------------------------------------------------------------------------------------------------------------------------
-# OKTA PROVIDER VERSION REQUIREMENTS 
-# Okta's resource requires you specify this version to work
+# VERSION REQUIREMENTS 
+# Versions of Teraform and its providers pinned for stability
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 terraform {
@@ -25,9 +25,10 @@ resource "okta_user" "user" {
    last_name   = each.value.last_name
    login       = each.value.login
    email       = each.value.email
-  lifecycle {
+
+   lifecycle {
     ignore_changes = [group_memberships, admin_roles]
-  }
+   }
 }
 
 output "okta_user" {
