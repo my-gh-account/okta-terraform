@@ -132,8 +132,6 @@ resource "okta_app_saml_app_settings" "aws_federation_settings" {
 }
 
 
-
-
 #-------------------------------------------------------------------------------------------------------------------------------------
 # ASSIGNMENTS TO THE AWS APP
 # This will assign group to the aws app, from the previously filtered out groups
@@ -147,6 +145,7 @@ resource "okta_app_group_assignments" "AWSFederationGroups" {
     id = each.key
   }
 }
+
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # ROLE CREATION
@@ -164,7 +163,4 @@ resource "aws_iam_role" "okta-role" {
   tags = {
     "Name"             = each.value.name
   }
-
 }
-
-

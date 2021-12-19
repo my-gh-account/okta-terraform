@@ -13,7 +13,6 @@ terraform {
 }
 
 
-
 #-------------------------------------------------------------------------------------------------------------------------------------
 # OKTA DYNAMIC USER CREATOR 
 # Speciy user in variable in live module to create.

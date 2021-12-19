@@ -3,7 +3,6 @@
 # Okta's resource requires you specify this version to work
 #-------------------------------------------------------------------------------------------------------------------------------------
 
-
 terraform {
   required_providers {
     okta = {
@@ -14,7 +13,6 @@ terraform {
 }
 
 
-
 #-------------------------------------------------------------------------------------------------------------------------------------
 # OKTA RULE TO GROUP CREATION/MAPPING 
 # This lets you create a new group dynamically by specifying OKTA's extremely granular rules.  The First resource will make a group
@@ -23,7 +21,6 @@ terraform {
 # access to resources based on that team.  Using Okta's extremely granular expression language allows you to be as specific as possible
 # when specifying permissions
 #-------------------------------------------------------------------------------------------------------------------------------------
-
 
 resource "okta_group" "app" {
   for_each    = var.apps
@@ -41,6 +38,3 @@ resource "okta_group_rule" "app" {
   expression_value  = each.value.rule
   users_excluded    = []
 }
-
-
-
