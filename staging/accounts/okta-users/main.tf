@@ -51,6 +51,31 @@ provider "okta" {
 
 module "okta-users" {
   source = "../../../modules/accounts/okta-users/"
-  okta_users = var.okta_users 
+  okta_users = [
+    {
+    first_name = "Patrick"
+    last_name  = "Putman"
+    login      = "putman.patrick@gmail.com"
+    email      = "putman.patrick@gmail.com"
+    },
+    {
+      first_name = "Bob"
+      last_name  = "Johnson"
+      login      = "bob@example.com"
+      email      = "bob@example.com"
+    },
+    {
+      first_name = "Sally"
+      last_name  = "Parker"
+      login      = "sally@example.com"
+      email      = "sally@example.com"
+    },
+    {
+      first_name = "Test"
+      last_name  = "User"
+      login      = "testuser@example.com"
+      email      = "testuser@example.com"
+    }
+  ]
 }
 

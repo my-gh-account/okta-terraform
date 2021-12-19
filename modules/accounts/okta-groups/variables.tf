@@ -1,13 +1,4 @@
 #-------------------------------------------------------------------------------------------------------------------------------------
-# RULE TO GROUP VARIABLE
-# Rule to map okta users to groups specified by their APP, in okta, with Okta RBAC
-#-------------------------------------------------------------------------------------------------------------------------------------
-variable "apps" {
-  type = map(
-    map(string)
-  )
-}
-#-------------------------------------------------------------------------------------------------------------------------------------
 # ASSIGNMENTS TO THE AWS APP
 # This lets you specify another name for the trusted identity provider in AWS if desired, fine to leave as default otherwise.
 #-------------------------------------------------------------------------------------------------------------------------------------
@@ -30,4 +21,14 @@ variable "aws_saml_provider_name" {
 variable "aws_saml_app_filter" {
   type = string
   default = "okta"
+}
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+# RULE TO GROUP VARIABLE
+# Rule to map okta users to groups specified by their APP, in okta, with Okta RBAC
+#-------------------------------------------------------------------------------------------------------------------------------------
+variable "apps" {
+  type = map(
+    map(string)
+  )
 }

@@ -18,7 +18,7 @@ terraform {
 terraform {
   required_providers {
     okta = {
-      source  = "okta/okta"
+      source = "okta/okta"
     }
   }
 }
@@ -72,7 +72,7 @@ module "okta-groups" {
 
   aws_saml_app_filter    = var.aws_saml_app_filter
   aws_saml_provider_name = var.aws_saml_provider_name
- 
+
 
 
 
@@ -89,5 +89,4 @@ module "okta-groups" {
     "aws-975678609170-test_policy2" = { rule = "user.email == \"putman.patrick@gmail.com\"" },
     "aws-975678609170-test_policy"  = { rule = "user.email == \"putman.patrick@gmail.com\"" },
   }
-
 }

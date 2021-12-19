@@ -24,8 +24,8 @@ variable "vault_secret_path" {
 
 variable "aws_saml_provider_name" {
   description = "Name of the trusted identity provider in aws, can leave as default"
-  type = string
-  default = "Okta-SSO"
+  type        = string
+  default     = "Okta-SSO"
 }
 
 
@@ -39,6 +39,16 @@ variable "aws_saml_provider_name" {
 
 variable "aws_saml_app_filter" {
   description = "Name of app filter, if unsure, leave as default"
-  type = string
-  default = "okta"
+  type        = string
+  default     = "okta"
+}
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+# RULE TO GROUP VARIABLE
+# Rule to map okta users to groups specified by their APP, in okta, with Okta RBAC
+#-------------------------------------------------------------------------------------------------------------------------------------
+variable "apps" {
+  type = map(
+    map(string)
+  )
 }
