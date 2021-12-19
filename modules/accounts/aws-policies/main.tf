@@ -1,3 +1,14 @@
+terraform {
+  required_version = "~> 1.1.0" 
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "~> 3.0"
+    }
+  }
+}
+
+
 #-------------------------------------------------------------------------------------------------------------------------------------
 # IAM POLICY GENERATOR 
 # This Resource will generate policies from a list of objects, defined in variables file
