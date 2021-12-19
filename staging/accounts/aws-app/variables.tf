@@ -21,7 +21,7 @@ variable "vault_secret_path" {
 # This lets you specify another name for the trusted identity provider in AWS if desired, fine to leave as default otherwise.
 #-------------------------------------------------------------------------------------------------------------------------------------
 
-variable "saml_provider" {
+variable "aws_saml_provider_name" {
   description = "The name of the SAML provider (trusted identity provider) to create in aws/iam"
   type        = string
   default     = "Okta-SSO"
@@ -37,7 +37,7 @@ variable "saml_provider" {
 # It will forward it through, granting them access to the specified role (and thus policy) in AWS.
 #-------------------------------------------------------------------------------------------------------------------------------------
 
-variable "app_filter" {
+variable "aws_saml_app_filter" {
   description = "Filters which source of users can sign into aws, default set to only native okta users"
   type        = string
   default     = "okta"

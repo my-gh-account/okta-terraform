@@ -27,7 +27,7 @@ terraform {
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # AWS PROVIDER MODULE
-# Lets use AWS resources
+# Lets us use AWS resources
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 provider "aws" {
@@ -70,6 +70,6 @@ provider "okta" {
 
 module "aws-app" {
   source        = "../../../modules/accounts/aws-app/"
-  app_filter    = var.app_filter
-  saml_provider = var.saml_provider
+  aws_saml_app_filter    = var.aws_saml_app_filter
+  aws_saml_provider_name = var.aws_saml_provider_name
 }

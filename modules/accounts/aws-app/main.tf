@@ -13,9 +13,6 @@ terraform {
 }
 
 
-
-
-
 #-------------------------------------------------------------------------------------------------------------------------------------
 # OKTA GROUP AND AWS ACCOUNT NUMBER DATA SOURCES
 # These pull down the existing groups configured in okta along with the aws account number
@@ -61,7 +58,7 @@ data "aws_iam_policy" "valid_policies" {
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 resource "aws_iam_saml_provider" "saml_provider" {
-  name                   = var.saml_provider
+  name                   = var.aws_saml_provider_name
   saml_metadata_document = okta_app_saml.aws_federation.metadata 
   tags = {
     "Name" = "okta sso saml provider"
@@ -116,17 +113,17 @@ resource "okta_app_saml_app_settings" "aws_federation_settings" {
   settings = jsonencode(
     {
       # AppFilter set by variable in variables.tf to restrict source of users
-      "appFilter" : "${var.app_filter}",
+      "appFilter" : "${var.aws_saml_app_filter}",
       "awsEnvironmentType" : "aws.amazon",
       # Regex responsponsible for detecting group is meant to go to aws, with account ID, and mapped to the proper role
       "groupFilter" : "^app\\-aws\\-(?{{accountid}}\\d+)\\-(?{{role}}[\\w\\-]+)$"
       "joinAllRoles" : true,
       "loginURL" : "https://console.aws.amazon.com/ec2/home",
-      "roleValuePattern" : "arn:aws:iam::$${accountid}:saml-provider/${var.saml_provider},arn:aws:iam::$${accountid}:role/$${role}",
+      "roleValuePattern" : "arn:aws:iam::$${accountid}:saml-provider/${var.aws_saml_provider_name},arn:aws:iam::$${accountid}:role/$${role}",
       "sessionDuration" : 3600,
       # Use Group Mapping will make the above regex work, so groups are automatically assigned to Role at specified account
       "useGroupMapping" : true,
-      "identityProviderArn" : "aws_iam_saml_provider.${var.saml_provider}.arn",
+      "identityProviderArn" : "aws_iam_saml_provider.${var.aws_saml_provider_name}.arn",
     }
   )
 }

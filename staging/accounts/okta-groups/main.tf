@@ -24,6 +24,14 @@ terraform {
   }
 }
 
+#-------------------------------------------------------------------------------------------------------------------------------------
+# AWS PROVIDER MODULE
+# Lets us use AWS resources
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+provider "aws" {
+  region = "us-east-2"
+}
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # VAULT VARIABLES 
@@ -63,6 +71,12 @@ provider "okta" {
 module "okta-groups" {
   source = "../../../modules/accounts/okta-groups/"
 
+  aws_saml_app_filter    = var.aws_saml_app_filter
+  aws_saml_provider_name = var.aws_saml_provider_name
+ 
+
+
+
   apps = {
     "Salesforce"            = { rule = "user.department == \"Sales\" OR user.department == \"Marketing\"" },
     "aws-384338-FullAccess" = { rule = "user.email == \"putman.patrick@gmail.com\"" },
@@ -76,4 +90,5 @@ module "okta-groups" {
     "aws-975678609170-test_policy2" = { rule = "user.email == \"putman.patrick@gmail.com\"" },
     "aws-975678609170-test_policy"  = { rule = "user.email == \"putman.patrick@gmail.com\"" },
   }
+
 }

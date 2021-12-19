@@ -4,12 +4,10 @@
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 # Name of the trusted identity provider in aws, can leave as default
-variable "saml_provider" {
+variable "aws_saml_provider_name" {
   type = string
   default = "Okta-SSO"
 }
-
-
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------
@@ -20,8 +18,7 @@ variable "saml_provider" {
 # It will forward it through, granting them access to the specified role (and thus policy) in AWS.
 #-------------------------------------------------------------------------------------------------------------------------------------
 
-variable "app_filter" {
+variable "aws_saml_app_filter" {
   type = string
   default = "okta"
 }
-
