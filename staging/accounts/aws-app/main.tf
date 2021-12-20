@@ -35,7 +35,6 @@ provider "aws" {
 }
 
 
-
 #-------------------------------------------------------------------------------------------------------------------------------------
 # VAULT VARIABLES 
 # Refers to variables for Hashicorp Vault in variables.tf
@@ -60,7 +59,6 @@ provider "okta" {
   base_url  = "okta.com"
   api_token = data.vault_generic_secret.okta_creds.data["api_token"]
 }
-
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------

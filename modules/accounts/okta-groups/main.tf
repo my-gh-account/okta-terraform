@@ -13,17 +13,6 @@ terraform {
   }
 }
 
-#-------------------------------------------------------------------------------------------------------------------------------------
-# CALL TO AWS APP MODULE
-# Integrated the aws app module here to make group changes easier
-#-------------------------------------------------------------------------------------------------------------------------------------
-
-module "aws-app" {
-  source        = "../../../modules/accounts/aws-app/"
-  aws_saml_app_filter    = var.aws_saml_app_filter
-  aws_saml_provider_name = var.aws_saml_provider_name
-}
-
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # OKTA RULE TO GROUP CREATION/MAPPING 
