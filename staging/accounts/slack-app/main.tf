@@ -37,9 +37,9 @@ provider "vault" {
   address = var.vault_address
 }
 
-data "vault_generic_secret" "slack_creds" {
-  path = var.vault_slack_secret_path
-}
+#data "vault_generic_secret" "slack_creds" {
+#  path = var.vault_slack_secret_path
+#}
 
 data "vault_generic_secret" "okta_creds" {
   path = var.vault_okta_secret_path
@@ -59,10 +59,10 @@ provider "okta" {
   api_token = data.vault_generic_secret.okta_creds.data["api_token"]
 }
 
-provider "slack" {
-  token = data.vault_generic_secret.slack_creds.data["api_token"]
-
-}
+#provider "slack" {
+#  token = data.vault_generic_secret.slack_creds.data["api_token"]
+#
+#}
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------
@@ -74,7 +74,4 @@ module "slack-app" {
   source        = "../../../modules/accounts/slack-app/"
 }
 
-output "slack_groups" {
-  value     = module.slack-app.slack_groups
-}
 
