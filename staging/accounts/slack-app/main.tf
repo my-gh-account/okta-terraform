@@ -59,11 +59,6 @@ provider "okta" {
   api_token = data.vault_generic_secret.okta_creds.data["api_token"]
 }
 
-#provider "slack" {
-#  token = data.vault_generic_secret.slack_creds.data["api_token"]
-#
-#}
-
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # MODULE REFERENCE
@@ -72,6 +67,7 @@ provider "okta" {
 
 module "slack-app" {
   source        = "../../../modules/accounts/slack-app/"
+  workspaces    = var.workspaces
 }
 
 

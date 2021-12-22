@@ -71,16 +71,19 @@ module "okta-groups" {
   source = "../../../modules/accounts/okta-groups/"
 
   apps = {
-    "aws-384338-FullAccess" = { rule = "user.email == \"putman.patrick@gmail.com\"" },
-    "aws-test-FullAccess"   = { rule = "user.email == \"putman.patrick@gmail.com\"" },
-    "aws-975678609170-AdministratorAccess" = { rule = join(" ", [ # This join gives us a better way to specify larger, more complex rules on multiple lines.
+    #AWS Rules format:  aws-accountnumber-s3Policy
+    "aws-975678609170-AdministratorAccess" = { rule = "user.email == \"putman.patrick@gmail.com\""}, 
+    "aws-975678609170-test_policy3" = { rule = "user.email == \"putman.patrick@gmail.com\""}, 
+    "aws-975678609170-AmazonS3FullAccess" = { rule = join(" ", [ # This join gives us a better way to specify larger, more complex rules on multiple lines.
       "user.email == \"putman.patrick@gmail.com\" OR",            # Admin
       "user.email == \"sally@example.com\"        OR",            # CTO      
       "user.email == \"bob@example.com\"          OR",
       "user.email == \"test3@gmail.com\"" 
       ])
     },
-    "slack-deserthomescleaning" = { rule = "user.email == \"putman.patrick@gmail.com\"" },
+    #Slack Rules Formation:  slack-workspace
+#    "slack-deserthomescleaning" = { rule = "user.email == \"putman.patrick@gmail.com\"" },
+#    "slack-security_team" = { rule = "user.email == \"putman.patrick@gmail.com\"" },
   }
 }
 

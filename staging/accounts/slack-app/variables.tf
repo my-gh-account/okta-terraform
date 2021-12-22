@@ -21,3 +21,9 @@ variable "vault_slack_secret_path" {
   default     = "secret/slack_creds"
 }
 
+variable "workspaces" {
+    description = "List of valid slack workspaces"
+    type        = list(string)
+    default     = [ "deserthomescleaning", "security_team" ] 
+
+}
