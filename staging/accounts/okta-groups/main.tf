@@ -82,8 +82,13 @@ module "okta-groups" {
       ])
     },
     #Slack Rules Formation:  slack-workspace
-#    "slack-deserthomescleaning" = { rule = "user.email == \"putman.patrick@gmail.com\"" },
-#    "slack-security_team" = { rule = "user.email == \"putman.patrick@gmail.com\"" },
+    "slack-deserthomescleaning" = { rule = join(" ", [
+      "user.email == \"putman.patrick@gmail.com\" OR",
+      "user.email == \"patrick@teramind.co\" OR",
+      "user.email == \"patrick@deserthomescleaning.com\"",
+     ])
+     },
+    "slack-security_team" = { rule = "user.email == \"putman.patrick@gmail.com\"" },
   }
 }
 

@@ -75,6 +75,12 @@ module "okta-users" {
       last_name  = "User"
       login      = "testuser@example.com"
       email      = "testuser@example.com"
+    },
+    {
+      first_name = "patrick"
+      last_name  = "DHC"
+      login      = "patrick@deserthomescleaning.com"
+      email      = "patrick@deserthomescleaning.com"
     }
   ]
 }

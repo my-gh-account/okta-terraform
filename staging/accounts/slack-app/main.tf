@@ -70,4 +70,3 @@ module "slack-app" {
   workspaces    = var.workspaces
 }
 
-
