@@ -15,15 +15,31 @@ variable "vault_okta_secret_path" {
   default     = "secret/okta_creds"
 }
 
-variable "vault_slack_secret_path" {
-  description = "The path to access the okta credentials in Vault"
-  type        = string
-  default     = "secret/slack_creds"
+variable "app" {
+  type    = string
+  default = "slack"
 }
 
 variable "workspaces" {
-    description = "List of valid slack workspaces"
-    type        = list(string)
-    default     = [ "deserthomescleaning", "security_team" ] 
-
+  type    = list(any)
+  default = ["deserthomescleaning"]
 }
+
+#variable "app_settings_json" {
+#  type = map
+#  default = {
+#    afwOnly : false
+#  }
+#}
+#variable "app_links_json" {
+#  type = map(bool)
+#  default = {
+#    accounts : true
+#    calendar : true
+#    drive    : true
+#    keep     : false
+#    mail     : true
+#    sites    : false
+#    }
+#} 
+  

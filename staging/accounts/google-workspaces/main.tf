@@ -18,7 +18,7 @@ terraform {
 terraform {
   required_providers {
     okta = {
-      source  = "okta/okta"
+      source = "okta/okta"
     }
 
   }
@@ -57,8 +57,11 @@ provider "okta" {
 # sets variables defined in module and can set in variables.tf, see module at source for explanation 
 #-------------------------------------------------------------------------------------------------------------------------------------
 
-module "slack-app" {
-  source        = "../../../modules/accounts/google-workspaces/"
-  workspaces    = var.workspaces
+module "google-workspaces" {
+  source            = "../../../modules/accounts/google-workspaces/"
+  app               = var.app
+  accounts          = var.accounts
+  app_links_json    = var.app_links_json
+#  app_settings_json = var.app_settings_json
 }
 

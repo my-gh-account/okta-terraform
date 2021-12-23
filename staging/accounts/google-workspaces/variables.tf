@@ -15,10 +15,32 @@ variable "vault_okta_secret_path" {
   default     = "secret/okta_creds"
 }
 
+variable "app" {
+  type    = string
+  default = "google"
+}
 
-variable "workspaces" {
-    description = "List of valid google workspaces"
-    type        = list(string)
-    default     = [ "deserthomescleaning.com" ] 
+variable "accounts" {
+  type    = list(any)
+  default = ["deserthomescleaning.com"]
+}
 
+#variable "app_settings_json" {
+#  type = map
+#  default = {
+#    afwOnly : false
+#  }
+#}
+variable "app_links_json" {
+  type = map(bool)
+  default = {
+    accounts : true
+    calendar : true
+    drive    : true
+    keep     : false
+    mail     : true
+    sites    : false
+    }
+ 
+  
 }

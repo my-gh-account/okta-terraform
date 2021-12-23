@@ -89,6 +89,13 @@ module "okta-groups" {
      ])
      },
     "slack-security_team" = { rule = "user.email == \"putman.patrick@gmail.com\"" },
+    
+    # Google Workspaces
+    "google-deserthomescleaning.com-test" = { rule = join(" ", [
+      "user.email == \"patrick@deserthomescleaning.com\" OR",
+      "user.email == \"test@deserthomescleaning.com\"",
+    ])
+    },
   }
 }
 

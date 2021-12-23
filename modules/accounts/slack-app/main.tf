@@ -71,7 +71,7 @@ resource "okta_app_saml" "slack" {
 
 resource "okta_app_group_assignments" "SlackGroups" {
 
-  for_each = { for key, value in okta_app_saml.slack : key => value if contains(var.workspaces, key) }
+  for_each = { for key, value in okta_app_saml.slack : key => value if contains(var.workspaces, key) && try(contains(local.account_names, key), false) }
   app_id = each.value.id
   depends_on = [okta_app_saml.slack]   
 
