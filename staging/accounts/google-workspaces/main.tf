@@ -5,7 +5,7 @@
 
 terraform {
   backend "s3" {
-    key = "staging/accounts/slack-app/terraform.tfstate"
+    key = "staging/accounts/google-workspaces/terraform.tfstate"
   }
 }
 
@@ -33,7 +33,6 @@ provider "vault" {
   address = var.vault_address
 }
 
-
 data "vault_generic_secret" "okta_creds" {
   path = var.vault_okta_secret_path
 }
@@ -59,7 +58,7 @@ provider "okta" {
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 module "slack-app" {
-  source        = "../../../modules/accounts/slack-app/"
+  source        = "../../../modules/accounts/google-workspaces/"
   workspaces    = var.workspaces
 }
 
