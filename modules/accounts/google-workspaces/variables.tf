@@ -1,11 +1,17 @@
 
 variable "app" {
   type = string
+  default = "google"
 }
 
+variable "okta-appname" {
+  type = string
+  default = "google"
+}
+
+
 variable "accounts" {
-  #type = list(map(string))
-  default = []
+  type = list(string)
 }
 
 variable "app_settings_json" {

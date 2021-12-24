@@ -60,7 +60,8 @@ provider "okta" {
 
 module "slack-app" {
   source        = "../../../modules/accounts/slack-app/"
-  accounts    = var.domains
+  accounts    = var.accounts
   app         = var.app
 }
+
 

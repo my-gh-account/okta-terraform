@@ -26,7 +26,8 @@ data "okta_groups" "okta_groups" {}
 
 locals {
   groups        = [for group in data.okta_groups.okta_groups.groups : group if(length(regexall("(?i)${var.app}", element(split("-", group.name), 1))) > 0)]
-  accounts =  [ for group in local.groups : merge (group, {"account" = element(split("-", group.name), 2)}) ]
+  accounts =  [ for group in local.groups : merge (group, {"account" = element(split("-", group.name), 2 )}) ]
+  group_map = [for group in local.accounts : merge(group, { "perms" = element(split("-", group.name), 3 )}) if contains(var.accounts, group.account) ]
 
 }
 
@@ -34,7 +35,9 @@ locals {
 module "saml-app" {
   source            = "../../../modules/accounts/saml-app/"
   app               = var.app
-  accounts          = local.accounts
+  okta-appname      = var.okta-appname
+  groups            = local.group_map
+  accounts          = var.accounts
   app_links_json    = var.app_links_json
   app_settings_json = var.app_settings_json
 }

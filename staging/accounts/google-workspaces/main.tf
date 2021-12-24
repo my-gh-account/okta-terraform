@@ -65,6 +65,3 @@ module "google-workspaces" {
   app_settings_json = var.app_settings_json
 }
 
-output "assignments" {
-  value = module.google-workspaces.group_assignments
-}

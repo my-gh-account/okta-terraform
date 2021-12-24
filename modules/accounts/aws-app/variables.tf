@@ -5,7 +5,7 @@
 
 # Name of the trusted identity provider in aws, can leave as default
 variable "aws_saml_provider_name" {
-  type = string
+  type    = string
   default = "Okta-SSO"
 }
 
@@ -19,6 +19,24 @@ variable "aws_saml_provider_name" {
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 variable "aws_saml_app_filter" {
-  type = string
+  type    = string
   default = "okta"
+}
+
+variable "app" {
+  type    = string
+  default = "aws"
+}
+
+
+variable "okta-appname" {
+  type = string
+  default = "amazon_aws"
+}
+
+variable "app_links_json" {
+  type = map(bool)
+  default = {
+    login = true
+  }
 }

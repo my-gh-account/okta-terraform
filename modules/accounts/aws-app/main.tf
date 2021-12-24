@@ -4,59 +4,59 @@
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 terraform {
-  required_version = "~> 1.1.0" 
+  required_version = "~> 1.1.0"
   required_providers {
     okta = {
       source  = "okta/okta"
       version = "~> 3.20"
     }
     aws = {
-      source = "hashicorp/aws"
+      source  = "hashicorp/aws"
       version = "~> 3"
     }
   }
 }
 
 
-#-------------------------------------------------------------------------------------------------------------------------------------
-# OKTA GROUP AND AWS ACCOUNT NUMBER DATA SOURCES
-# These pull down the existing groups configured in okta along with the aws account number
-# This along with the  below local variables will  filter these groups with those designated for the aws app
-#-------------------------------------------------------------------------------------------------------------------------------------
 
-data "okta_groups" "okta_groups" {}
 data "aws_caller_identity" "current" {}
-
-
-#-------------------------------------------------------------------------------------------------------------------------------------
-# LOCAL VARIABLES FOR AWS GROUP ID AND NAME - IAM POLICY DATA SOURCE
-# This is used to filter out only the existing groups that had app-aws-account#-validpolicyarn in them for group-role mapping
-# The local variables filters out the first two, and the valid_policies data source will cause the the apply to fail if
-# one of the SSOs is valid, so it won't just accidentally assign a whole bunch of invalid/useless roles to AWS
-#-------------------------------------------------------------------------------------------------------------------------------------
+data "okta_groups" "okta_groups" {}
 
 locals {
-  account_ids     = [data.aws_caller_identity.current.account_id]
-  aws_groups      = [for group in data.okta_groups.okta_groups.groups : group if(length(regexall("(?i)aws", element(split("-", group.name), 1))) > 0) && contains(local.account_ids, element(split("-", group.name), 2))]
-  aws_group_ids   = local.aws_groups[*].id
-  aws_group_names = local.aws_groups[*].name
+  groups    = [for group in data.okta_groups.okta_groups.groups : group if(length(regexall("(?i)${var.app}", element(split("-", group.name), 1))) > 0)]
+  accounts  = [for group in local.groups : merge(group, { "account" = element(split("-", group.name), 2) }) if data.aws_caller_identity.current.account_id == element(split("-", group.name), 2)]
+  group_map = [for group in local.accounts : merge(group, { "perms" = element(split("-", group.name), 3), "account" = "aws" })]
+
+
+  app_settings_json = {  
+  # AppFilter set by variable in variables.tf to restrict source of users
+  "appFilter" : "${var.aws_saml_app_filter}",
+  "awsEnvironmentType" : "aws.amazon",
+    # Regex responsponsible for detecting group is meant to go to aws, with account ID, and mapped to the proper role
+    "groupFilter" : "^app\\-aws\\-(?{{accountid}}\\d+)\\-(?{{role}}[\\w\\-]+)$"
+    "joinAllRoles" : true,
+    "loginURL" : "https://console.aws.amazon.com/ec2/home",
+    "roleValuePattern" : "arn:aws:iam::$${accountid}:saml-provider/${var.aws_saml_provider_name},arn:aws:iam::$${accountid}:role/$${role}",
+    "sessionDuration" : 3600,
+    # Use Group Mapping will make the above regex work, so groups are automatically assigned to Role at specified account
+    "useGroupMapping" : true,
+    "identityProviderArn" : "aws_iam_saml_provider.${var.aws_saml_provider_name}.arn",
+    }
 }
+
+
 
 data "aws_iam_policy" "valid_policies" {
-  count = length(local.aws_group_names)
-  name  = (element(split("-", local.aws_group_names[count.index]), 3))
+  for_each = toset([ for group in local.group_map : group.perms ])
+  name     = each.value
 }
 
 
-#-------------------------------------------------------------------------------------------------------------------------------------
-# TRUSTED IDENTITY PROVIDER FOR THE AWS GENERATED ROLES
-# This is the created trusted identity to login that roles will be assigned to later when we generate them
-# It gets its xml metadata from the aws app metadata data output
-#-------------------------------------------------------------------------------------------------------------------------------------
 
 resource "aws_iam_saml_provider" "saml_provider" {
+  for_each               = toset([ for account in local.accounts : account.account ])
   name                   = var.aws_saml_provider_name
-  saml_metadata_document = okta_app_saml.aws_federation.metadata 
+  saml_metadata_document = join("", [ for metadata in module.saml-app.saml-metadata : metadata.metadata  ])
   tags = {
     "Name" = "okta sso saml provider"
   }
@@ -68,7 +68,7 @@ data "aws_iam_policy_document" "instance-assume-role-policy" {
 
     principals {
       type        = "Federated"
-      identifiers = [aws_iam_saml_provider.saml_provider.arn]
+      identifiers = [for provider in aws_iam_saml_provider.saml_provider : provider.arn ]
     }
 
     condition {
@@ -83,61 +83,6 @@ data "aws_iam_policy_document" "instance-assume-role-policy" {
 }
 
 
-#-------------------------------------------------------------------------------------------------------------------------------------
-# OKTA AWS FEDERATION APP
-# This is the actual app users will use to sign on to AWS.  It will output a metadata xml file for the trusted identity provider
-#-------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-resource "okta_app_saml" "aws_federation" {
-  label             = "AWS Account Federation"
-  preconfigured_app = "amazon_aws"
-  lifecycle {
-    ignore_changes = [users, groups]
-  }
-}
-
-
-#-------------------------------------------------------------------------------------------------------------------------------------
-# OKTA AWS FEDERATION APP SETTINGS
-#-------------------------------------------------------------------------------------------------------------------------------------
-
-resource "okta_app_saml_app_settings" "aws_federation_settings" {
-  app_id = okta_app_saml.aws_federation.id
-  settings = jsonencode(
-    {
-      # AppFilter set by variable in variables.tf to restrict source of users
-      "appFilter" : "${var.aws_saml_app_filter}",
-      "awsEnvironmentType" : "aws.amazon",
-      # Regex responsponsible for detecting group is meant to go to aws, with account ID, and mapped to the proper role
-      "groupFilter" : "^app\\-aws\\-(?{{accountid}}\\d+)\\-(?{{role}}[\\w\\-]+)$"
-      "joinAllRoles" : true,
-      "loginURL" : "https://console.aws.amazon.com/ec2/home",
-      "roleValuePattern" : "arn:aws:iam::$${accountid}:saml-provider/${var.aws_saml_provider_name},arn:aws:iam::$${accountid}:role/$${role}",
-      "sessionDuration" : 3600,
-      # Use Group Mapping will make the above regex work, so groups are automatically assigned to Role at specified account
-      "useGroupMapping" : true,
-      "identityProviderArn" : "aws_iam_saml_provider.${var.aws_saml_provider_name}.arn",
-    }
-  )
-}
-
-
-#-------------------------------------------------------------------------------------------------------------------------------------
-# ASSIGNMENTS TO THE AWS APP
-# This will assign group to the aws app, from the previously filtered out groups
-#-------------------------------------------------------------------------------------------------------------------------------------
-
-resource "okta_app_group_assignments" "AWSFederationGroups" {
-  app_id = okta_app_saml.aws_federation.id
-
-  for_each = toset(local.aws_group_ids)
-  group {
-    id = each.key
-  }
-}
-
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # ROLE CREATION
@@ -148,11 +93,21 @@ resource "okta_app_group_assignments" "AWSFederationGroups" {
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 resource "aws_iam_role" "okta-role" {
-  for_each             = { for policy in data.aws_iam_policy.valid_policies : policy.name => policy }
-  name                 = each.value.name
-  assume_role_policy   = data.aws_iam_policy_document.instance-assume-role-policy.json
-  managed_policy_arns  = [each.value.arn]
+  for_each            = { for policy in data.aws_iam_policy.valid_policies : policy.name => policy }
+  name                = each.value.name
+  assume_role_policy  = data.aws_iam_policy_document.instance-assume-role-policy.json
+  managed_policy_arns = [each.value.arn]
   tags = {
-    "Name"             = each.value.name
+    "Name" = each.value.name
   }
+}
+
+module "saml-app" {
+  source            = "../../../modules/accounts/saml-app/"
+  app               = var.app
+  okta-appname      = var.okta-appname
+  groups            = local.group_map
+  accounts          = [ for group in local.group_map : group.account ]
+  app_links_json    = var.app_links_json
+  app_settings_json = local.app_settings_json
 }

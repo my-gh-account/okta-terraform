@@ -20,7 +20,12 @@ variable "app" {
   default = "slack"
 }
 
-variable "domains" {
+variable "okta-appname" {
+  type   = string
+  default = "slack"
+}
+
+variable "accounts" {
   type    = list(any)
   default = ["deserthomescleaning"]
 }
