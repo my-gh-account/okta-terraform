@@ -8,7 +8,6 @@ variable "okta-appname" {
 
 variable "accounts" {
   type = list(string)
-  default = []
 }
 
 variable "groups" {
@@ -17,8 +16,15 @@ variable "groups" {
 
 variable "app_settings_json" {
   type    = map(any)
+  default = {}
 }
 
 variable "app_links_json" {
   type    = map(bool)
+  default = {}
+}
+
+variable "profile" {
+  type   = map(any)
+  default = {}
 }

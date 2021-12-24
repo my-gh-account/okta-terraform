@@ -20,6 +20,7 @@ resource "okta_app_saml" "saml-app" {
   label             = each.key
   preconfigured_app = var.okta-appname
   #features          = []
+  profile           = jsonencode(var.profile)
   lifecycle {
     ignore_changes = [users, groups, app_settings_json]
   }

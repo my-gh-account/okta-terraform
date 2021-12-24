@@ -72,7 +72,7 @@ module "okta-groups" {
 
   apps = {
     #AWS Rules format:  aws-accountnumber-s3Policy
-    "aws-975678609170-AdministratorAccess" = { rule = "user.email == \"putman.patrick@gmail.com\"" },
+    "aws-975678609170-AdministratorAccess" = { rule = "user.email == \"patrick@deserthomescleaning.com\"" },
     "aws-975678609170-test_policy3"        = { rule = "user.email == \"putman.patrick@gmail.com\"" },
     "aws-975678609170-AmazonS3FullAccess" = { rule = join(" ", [ # This join gives us a better way to specify larger, more complex rules on multiple lines.
       "user.email == \"putman.patrick@gmail.com\" OR",           # Admin
@@ -81,6 +81,7 @@ module "okta-groups" {
       "user.email == \"test3@gmail.com\""
       ])
     },
+    
     #Slack Rules Formation:  slack-workspace
     "slack-deserthomescleaning" = { rule = join(" ", [
       "user.email == \"putman.patrick@gmail.com\" OR",
@@ -92,21 +93,15 @@ module "okta-groups" {
 
     #Google Workspaces
     "google-deserthomescleaning.com-test" = { rule = join(" ", [
-      "user.email == \"patrick@deserthomescleaning.com\" OR",
-      "user.email == \"test@deserthomescleaning.com\"",
+      "user.email == \"patrick@deserthomescleaning.com\"", # OR",
+    #  "user.email == \"test@deserthomescleaning.com\"",
       ])
     },
-    "google-deserthomescleaning.com-test2" = { rule = join(" ", [
-      "user.email == \"patrick@deserthomescleaning.com\" OR",
-      "user.email == \"test@deserthomescleaning.com\"",
-      ])
-    },
-
-    "google-deserthome.com-test" = { rule = join(" ", [
-      "user.email == \"patrick@deserthomescleaning.com\" OR",
-      "user.email == \"test@deserthomescleaning.com\"",
-      ])
-    },
+#    "google-deserthome.com-test" = { rule = join(" ", [
+#      "user.email == \"patrick@deserthomescleaning.com\" OR",
+#      "user.email == \"test@deserthomescleaning.com\"",
+#      ])
+#    },
   }
 }
 
