@@ -96,6 +96,12 @@ module "okta-groups" {
       "user.email == \"test@deserthomescleaning.com\"",
       ])
     },
+    "google-deserthomescleaning.com-test2" = { rule = join(" ", [
+      "user.email == \"patrick@deserthomescleaning.com\" OR",
+      "user.email == \"test@deserthomescleaning.com\"",
+      ])
+    },
+
     "google-deserthome.com-test" = { rule = join(" ", [
       "user.email == \"patrick@deserthomescleaning.com\" OR",
       "user.email == \"test@deserthomescleaning.com\"",

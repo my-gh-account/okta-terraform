@@ -62,6 +62,9 @@ module "google-workspaces" {
   app               = var.app
   accounts          = var.accounts
   app_links_json    = var.app_links_json
-#  app_settings_json = var.app_settings_json
+  app_settings_json = var.app_settings_json
 }
 
+output "assignments" {
+  value = module.google-workspaces.group_assignments
+}

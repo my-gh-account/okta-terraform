@@ -1,14 +1,11 @@
-#variable "workspaces" {
-#  description = "List of valid google domains"
-#  type        = list(string)
-#}
 
 variable "app" {
   type = string
 }
 
 variable "accounts" {
-  type = list(any)
+  #type = list(map(string))
+  default = []
 }
 
 variable "app_settings_json" {
@@ -16,7 +13,15 @@ variable "app_settings_json" {
   default = {}
 }
 
+
 variable "app_links_json" {
-  type    = map(bool)
-  default = {}
+  type = map(bool)
+  default = {
+    accounts : true
+    calendar : true
+    drive    : true
+    keep     : false
+    mail     : true
+    sites    : false
+  }
 }

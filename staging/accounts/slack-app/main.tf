@@ -58,9 +58,9 @@ provider "okta" {
 # sets variables defined in module and can set in variables.tf, see module at source for explanation 
 #-------------------------------------------------------------------------------------------------------------------------------------
 
-module "google-workspaces" {
-  source        = "../../../modules/accounts/google-workspaces/"
-  accounts    = var.workspaces
+module "slack-app" {
+  source        = "../../../modules/accounts/slack-app/"
+  accounts    = var.domains
   app         = var.app
 }
 

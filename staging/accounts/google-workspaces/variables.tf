@@ -21,16 +21,15 @@ variable "app" {
 }
 
 variable "accounts" {
-  type    = list(any)
-  default = ["deserthomescleaning.com"]
+  type    = list(string)
+  default = ["deserthomescleaning.com", "deserthome.com"]
 }
 
-#variable "app_settings_json" {
-#  type = map
-#  default = {
-#    afwOnly : false
-#  }
-#}
+variable "app_settings_json" {
+  type = map
+  default = {}
+}
+
 variable "app_links_json" {
   type = map(bool)
   default = {
