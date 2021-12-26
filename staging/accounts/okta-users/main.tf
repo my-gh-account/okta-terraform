@@ -33,7 +33,7 @@ provider "vault" {
 }
 
 data "vault_generic_secret" "okta_creds" {
-  path = var.vault_secret_path
+  path = var.vault_okta_secret_path
 }
 
 
@@ -87,6 +87,9 @@ module "okta-users" {
       last_name  = "User"
       login      = "test@deserthomescleaning.com"
       email      = "test@deserthomescleaning.com"
+      custom_profile_attributes   = {
+        gcpRoles =  ["roles/iam.workloadIdentityPoolAdmin"],
+      }
     },
 
   ]

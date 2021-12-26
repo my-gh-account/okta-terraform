@@ -25,6 +25,7 @@ resource "okta_user" "user" {
   last_name  = each.value.last_name
   login      = each.value.login
   email      = each.value.email
+  custom_profile_attributes = try(jsonencode ( each.value.custom_profile_attributes), null)
 
   lifecycle {
     ignore_changes = [group_memberships, admin_roles]
@@ -32,5 +33,5 @@ resource "okta_user" "user" {
 }
 
 output "okta_user" {
-  value = toset(var.okta_users)
+  value = var.okta_users
 }

@@ -43,8 +43,3 @@ resource "okta_app_group_assignments" "app_assignments" {
     }
   }
 }
-
-
-output "saml-app" {
-  value = local.groups_merged_with_app_id
-}

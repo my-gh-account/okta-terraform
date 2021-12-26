@@ -73,7 +73,7 @@ variable "accounts" {
         calendar = true
         drive    = true
         keep     = false
-        mail     = true
+        mail     = false
         sites    = false
       },
     },
@@ -83,7 +83,7 @@ variable "accounts" {
         calendar = true
         drive    = true
         keep     = false
-        mail     = true
+        mail     = false
         sites    = false
       },
     }

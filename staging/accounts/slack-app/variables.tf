@@ -63,11 +63,11 @@ variable "accounts" {
   description = "Array of account names or domains for the app"
   type        = map(any)
   default = {
-    "deserthomescleaning.com" = {
+    "deserthomescleaning" = {
       app_links_json = {
         slack_ink = true
       },
-      "deserthome.com" = {
+      "security_team" = {
         app_links_json = {
           slack_ink = true
         },
