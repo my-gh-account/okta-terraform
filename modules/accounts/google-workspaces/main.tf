@@ -24,25 +24,21 @@ terraform {
 
 data "okta_groups" "okta_groups" {}
 
-locals {
-  groups        = [for group in data.okta_groups.okta_groups.groups : group if(length(regexall("(?i)${var.app}", element(split("-", group.name), 1))) > 0)]
-  accounts =  [ for group in local.groups : merge (group, {"account" = element(split("-", group.name), 2)}) ]
-  group_map = [for group in local.accounts : merge(group, { "perms" = element(split("-", group.name), 3 )}) if contains(var.accounts, group.account) ]
 
+locals {
+  app_groups     = [for group in data.okta_groups.okta_groups.groups : group if(var.app_name == element(split("-", group.name), 1))]
+  role_groups    = [for group in local.app_groups : merge(group, { "role" = element(split("-", group.name), 3) })]
+  account_info   = { for name, account in var.accounts : name => merge(account, { "okta_appname" = var.okta_appname, "app_display_name" = var.app_display_name, app_settings_json = var.app_settings_json }) }
+  account_groups = { for name, info in local.account_info : name => merge(info, { "groups" = [for group in local.role_groups : group if name == element(split("-", group.name), 2)] }) }
 }
+
+
+
 
 
 
 module "saml-app" {
-  source            = "../../../modules/accounts/saml-app/"
-  app               = var.app
-  accounts          = var.accounts
-  groups            = local.group_map
-  app_links_json    = var.app_links_json
-  app_settings_json = var.app_settings_json
-  okta-appname      = var.okta-appname
+  source   = "../../../modules/accounts/saml-app/"
+  accounts = local.account_groups
 }
 
-output "group_assignments" {
-  value = module.saml-app.group_assignments
-}

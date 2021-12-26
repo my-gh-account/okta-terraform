@@ -37,4 +37,5 @@ resource "okta_group_rule" "app" {
   group_assignments = [okta_group.app[each.key].id]
   expression_type   = "urn:okta:expression:1.0"
   expression_value  = each.value.rule
+  users_excluded    = []
 }

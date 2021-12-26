@@ -46,8 +46,8 @@ data "vault_generic_secret" "okta_creds" {
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 provider "okta" {
-  org_name  = "teramindpputman"
-  base_url  = "okta.com"
+  org_name  = var.okta_org_name
+  base_url  = var.okta_account_url
   api_token = data.vault_generic_secret.okta_creds.data["api_token"]
 }
 
@@ -59,9 +59,10 @@ provider "okta" {
 
 module "google-workspaces" {
   source            = "../../../modules/accounts/google-workspaces/"
-  app               = var.app
+  app_name          = var.app_name
+  app_display_name  = var.app_display_name
   accounts          = var.accounts
-  app_links_json    = var.app_links_json
   app_settings_json = var.app_settings_json
 }
+
 

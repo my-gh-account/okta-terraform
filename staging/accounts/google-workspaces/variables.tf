@@ -15,31 +15,76 @@ variable "vault_okta_secret_path" {
   default     = "secret/okta_creds"
 }
 
-variable "app" {
-  type    = string
-  default = "google"
+
+variable "okta_org_name" {
+  description = "The okta account to connect to"
+  type        = string
+  default     = "dev-64024424"
 }
 
-variable "accounts" {
-  type    = list(string)
-  default = ["deserthomescleaning.com", "deserthome.com"]
+
+variable "okta_account_url" {
+  description = "base okta url"
+  type        = string
+  default     = "okta.com"
 }
+
+
+
+
+
+
+
+variable "app_name" {
+  description = "Name to use in okta groups configuration to specify the app"
+  type        = string
+  default     = "google"
+}
+
+variable "app_display_name" {
+  description = "Display name in okta webui for the app"
+  type        = string
+  default     = "Google Workspaces"
+}
+
+
+
+
 
 variable "app_settings_json" {
-  type = map
+  type    = map(any)
   default = {}
 }
 
-variable "app_links_json" {
-  type = map(bool)
+
+
+
+variable "accounts" {
+  description = "Array of account names or domains for the app"
+  type        = map(any)
   default = {
-    accounts : true
-    calendar : true
-    drive    : true
-    keep     : false
-    mail     : true
-    sites    : false
+    "deserthomescleaning.com" = {
+      default_relay_state = ""
+      app_links_json = {
+        accounts = true
+        calendar = true
+        drive    = true
+        keep     = false
+        mail     = true
+        sites    = false
+      },
+    },
+    "deserthome.com" = {
+      default_relay_state = ""
+      app_links_json = {
+        accounts = true
+        calendar = true
+        drive    = true
+        keep     = false
+        mail     = true
+        sites    = false
+      },
     }
- 
-  
+  }
 }
+

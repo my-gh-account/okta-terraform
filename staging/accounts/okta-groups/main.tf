@@ -52,7 +52,7 @@ data "vault_generic_secret" "okta_creds" {
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 provider "okta" {
-  org_name  = "teramindpputman"
+  org_name  = "dev-64024424"
   base_url  = "okta.com"
   api_token = data.vault_generic_secret.okta_creds.data["api_token"]
 }
@@ -85,16 +85,14 @@ module "okta-groups" {
     #Slack Rules Formation:  slack-workspace
     "slack-deserthomescleaning" = { rule = join(" ", [
       "user.email == \"putman.patrick@gmail.com\" OR",
-      "user.email == \"patrick@teramind.co\" OR",
-      "user.email == \"patrick@deserthomescleaning.com\"",
+      "user.email == \"patrick@teramind.co\""
       ])
     },
     "slack-security_team" = { rule = "user.email == \"putman.patrick@gmail.com\"" },
 
     #Google Workspaces
     "google-deserthomescleaning.com-test" = { rule = join(" ", [
-      "user.email == \"patrick@deserthomescleaning.com\"", # OR",
-    #  "user.email == \"test@deserthomescleaning.com\"",
+      "user.email == \"test@deserthomescleaning.com\"",
       ])
     },
 #    "google-deserthome.com-test" = { rule = join(" ", [
@@ -102,6 +100,18 @@ module "okta-groups" {
 #      "user.email == \"test@deserthomescleaning.com\"",
 #      ])
 #    },
+    #Google Cloud 
+    "gcp-deserthomescleaning.com-test" = { rule = join(" ", [
+      "user.email == \"test@deserthomescleaning.com\" OR",
+      "user.email == \"putman.patrick@gmail.com\"",
+      ])
+    },
+#    "google-deserthome.com-test" = { rule = join(" ", [
+#      "user.email == \"patrick@deserthomescleaning.com\" OR",
+#      "user.email == \"test@deserthomescleaning.com\"",
+#      ])
+#    },
+
   }
 }
 

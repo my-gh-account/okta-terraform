@@ -38,7 +38,7 @@ data "vault_generic_secret" "okta_creds" {
 }
 
 provider "okta" {
-  org_name  = "teramindpputman"
+  org_name  = "dev-64024424"
   base_url  = "okta.com"
   api_token = data.vault_generic_secret.okta_creds.data["api_token"]
 }
@@ -77,11 +77,12 @@ module "okta-users" {
       email      = "testuser@example.com"
     },
     {
-      first_name = "patrick"
-      last_name  = "DHC"
-      login      = "patrick@deserthomescleaning.com"
-      email      = "patrick@deserthomescleaning.com"
-    }
+      first_name = "Test"
+      last_name  = "User"
+      login      = "test@deserthomescleaning.com"
+      email      = "test@deserthomescleaning.com"
+    },
+
   ]
 }
 

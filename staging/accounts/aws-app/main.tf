@@ -55,7 +55,7 @@ data "vault_generic_secret" "okta_creds" {
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 provider "okta" {
-  org_name  = "teramindpputman"
+  org_name  = "dev-64024424"
   base_url  = "okta.com"
   api_token = data.vault_generic_secret.okta_creds.data["api_token"]
 }

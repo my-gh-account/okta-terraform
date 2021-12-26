@@ -1,17 +1,21 @@
 
-variable "app" {
-  type = string
+variable "app_name" {
+  type    = string
   default = "google"
 }
 
-variable "okta-appname" {
-  type = string
+variable "okta_appname" {
+  type    = string
   default = "google"
 }
 
+variable "app_display_name" {
+  type    = string
+  default = "google"
+}
 
 variable "accounts" {
-  type = list(string)
+  type = map(any)
 }
 
 variable "app_settings_json" {
@@ -19,15 +23,3 @@ variable "app_settings_json" {
   default = {}
 }
 
-
-variable "app_links_json" {
-  type = map(bool)
-  default = {
-    accounts : true
-    calendar : true
-    drive    : true
-    keep     : false
-    mail     : true
-    sites    : false
-  }
-}
