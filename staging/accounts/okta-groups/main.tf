@@ -42,7 +42,7 @@ provider "vault" {
 }
 
 data "vault_generic_secret" "okta_creds" {
-  path = var.vault_secret_path
+  path = var.vault_okta_secret_path
 }
 
 
@@ -52,9 +52,9 @@ data "vault_generic_secret" "okta_creds" {
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 provider "okta" {
-  org_name  = "dev-64024424"
-  base_url  = "okta.com"
-  api_token = data.vault_generic_secret.okta_creds.data["api_token"]
+  org_name  = var.okta_org_name
+  base_url  = var.okta_account_url
+  api_token = data.vault_generic_secret.okta_creds.data[var.token]
 }
 
 
@@ -78,10 +78,10 @@ module "okta-groups" {
       "user.email == \"putman.patrick@gmail.com\" OR",           # Admin
       "user.email == \"sally@example.com\"        OR",           # CTO      
       "user.email == \"bob@example.com\"          OR",
-      "user.email == \"test3@gmail.com\""
+      "user.email == \"test@deserthomescleaning.com\""
       ])
     },
-    
+
     #Slack Rules Formation:  slack-workspace
     "slack-deserthomescleaning" = { rule = join(" ", [
       "user.email == \"putman.patrick@gmail.com\" OR",
@@ -95,27 +95,24 @@ module "okta-groups" {
       "user.email == \"test@deserthomescleaning.com\"",
       ])
     },
-#    "google-deserthome.com-test" = { rule = join(" ", [
-#      "user.email == \"patrick@deserthomescleaning.com\" OR",
-#      "user.email == \"test@deserthomescleaning.com\"",
-#      ])
-#    },
+    #    "google-deserthome.com-test" = { rule = join(" ", [
+    #      "user.email == \"patrick@deserthomescleaning.com\" OR",
+    #      "user.email == \"test@deserthomescleaning.com\"",
+    #      ])
+    #    },
     #Google Cloud 
     "gcp-deserthomescleaning.com-test" = { rule = join(" ", [
       "user.email == \"test@deserthomescleaning.com\" OR",
+      "user.email == \"patrick@teramind.co\" OR",
       "user.email == \"putman.patrick@gmail.com\"",
       ])
     },
-#    "google-deserthome.com-test" = { rule = join(" ", [
-#      "user.email == \"patrick@deserthomescleaning.com\" OR",
-#      "user.email == \"test@deserthomescleaning.com\"",
-#      ])
-#    },
+    "google-deserthome.com-test" = { rule = join(" ", [
+      "user.email == \"patrick@deserthomescleaning.com\" OR",
+      "user.email == \"test@deserthomescleaning.com\"",
+      ])
+    },
 
   }
 }
-
-
-
-
 

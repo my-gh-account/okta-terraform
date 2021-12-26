@@ -23,10 +23,9 @@ terraform {
   }
 }
 
-
 #-------------------------------------------------------------------------------------------------------------------------------------
-# HASHICORP VAULT TO SAFELY STORE OKTA CREDENTIALS 
-# This allows us to safely store okta API Token  without them appearing in tfstate file
+# VAULT VARIABLES 
+# Refers to variables for Hashicorp Vault in variables.tf
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 provider "vault" {
@@ -37,11 +36,18 @@ data "vault_generic_secret" "okta_creds" {
   path = var.vault_secret_path
 }
 
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+# OKTA CREDENTIALS
+# allows login to okta, api_token pointing here to data source created for hashicorp vault secure secret storage
+#-------------------------------------------------------------------------------------------------------------------------------------
+
 provider "okta" {
-  org_name  = "dev-64024424"
-  base_url  = "okta.com"
-  api_token = data.vault_generic_secret.okta_creds.data["api_token"]
+  org_name  = var.okta_org_name 
+  base_url  = var.okta_account_url
+  api_token = data.vault_generic_secret.okta_creds.data[var.api_token]
 }
+
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------

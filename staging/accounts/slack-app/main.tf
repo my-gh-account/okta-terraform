@@ -18,7 +18,7 @@ terraform {
 terraform {
   required_providers {
     okta = {
-      source  = "okta/okta"
+      source = "okta/okta"
     }
 
   }
@@ -33,7 +33,6 @@ provider "vault" {
   address = var.vault_address
 }
 
-
 data "vault_generic_secret" "okta_creds" {
   path = var.vault_okta_secret_path
 }
@@ -47,11 +46,10 @@ data "vault_generic_secret" "okta_creds" {
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 provider "okta" {
-  org_name  = "teramindpputman"
-  base_url  = "okta.com"
+  org_name  = var.okta_org_name
+  base_url  = var.okta_account_url
   api_token = data.vault_generic_secret.okta_creds.data["api_token"]
 }
-
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # MODULE REFERENCE
@@ -59,9 +57,11 @@ provider "okta" {
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 module "slack-app" {
-  source        = "../../../modules/accounts/slack-app/"
-  accounts    = var.accounts
-  app         = var.app
+  source            = "../../../modules/accounts/slack-app/"
+  app_name          = var.app_name
+  app_display_name  = var.app_display_name
+  accounts          = var.accounts
+  app_settings_json = var.app_settings_json
 }
 
 

@@ -29,6 +29,10 @@ variable "okta_account_url" {
   default     = "okta.com"
 }
 
+variable "token" {
+  type    = string
+  default = "api_token"
+}
 
 
 
@@ -64,7 +68,6 @@ variable "accounts" {
   type        = map(any)
   default = {
     "deserthomescleaning.com" = {
-      default_relay_state = ""
       app_links_json = {
         accounts = true
         calendar = true
@@ -75,7 +78,6 @@ variable "accounts" {
       },
     },
     "deserthome.com" = {
-      default_relay_state = ""
       app_links_json = {
         accounts = true
         calendar = true

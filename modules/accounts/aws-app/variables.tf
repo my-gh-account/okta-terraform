@@ -23,20 +23,34 @@ variable "aws_saml_app_filter" {
   default = "okta"
 }
 
-variable "app" {
+
+
+
+variable "app_name" {
   type    = string
-  default = "aws"
-}
-
-
-variable "okta-appname" {
-  type = string
   default = "amazon_aws"
 }
 
-variable "app_links_json" {
-  type = map(bool)
+variable "okta_appname" {
+  type    = string
+  default = "amazon_aws"
+}
+
+variable "app_display_name" {
+  type    = string
+  default = "AWS"
+}
+
+variable "accounts" {
+  description = "Array of account names or domains for the app"
+  type        = map(any)
   default = {
-    login = true
+    "975678609170" = {
+    },
   }
 }
+variable "app_settings_json" {
+  type    = map(any)
+  default = {}
+}
+

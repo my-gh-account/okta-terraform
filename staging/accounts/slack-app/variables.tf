@@ -15,27 +15,64 @@ variable "vault_okta_secret_path" {
   default     = "secret/okta_creds"
 }
 
-variable "app" {
-  type    = string
-  default = "slack"
+
+variable "okta_org_name" {
+  description = "The okta account to connect to"
+  type        = string
+  default     = "dev-64024424"
 }
 
-variable "okta-appname" {
-  type   = string
-  default = "slack"
+
+variable "okta_account_url" {
+  description = "base okta url"
+  type        = string
+  default     = "okta.com"
 }
+
+
+
+
+
+
+
+variable "app_name" {
+  description = "Name to use in okta groups configuration to specify the app"
+  type        = string
+  default     = "slack"
+}
+
+variable "app_display_name" {
+  description = "Display name in okta webui for the app"
+  type        = string
+  default     = "Slack"
+}
+
+
+
+
+
+variable "app_settings_json" {
+  type    = map(any)
+  default = {}
+}
+
+
+
 
 variable "accounts" {
-  type    = list(any)
-  default = ["deserthomescleaning"]
+  description = "Array of account names or domains for the app"
+  type        = map(any)
+  default = {
+    "deserthomescleaning.com" = {
+      app_links_json = {
+        slack_ink = true
+      },
+      "deserthome.com" = {
+        app_links_json = {
+          slack_ink = true
+        },
+      }
+    }
+  }
 }
 
-#variable "app_settings_json" {
-#  type = map(string)
-#  default = {}
-#}
-#
-#variable "app_links_json" {
-#  type = map(bool)
-#  default = {}
-#}

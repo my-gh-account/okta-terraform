@@ -23,12 +23,15 @@ data "aws_caller_identity" "current" {}
 data "okta_groups" "okta_groups" {}
 
 locals {
-  groups    = [for group in data.okta_groups.okta_groups.groups : group if(length(regexall("(?i)${var.app}", element(split("-", group.name), 1))) > 0)]
-  accounts  = [for group in local.groups : merge(group, { "account" = element(split("-", group.name), 2) }) if data.aws_caller_identity.current.account_id == element(split("-", group.name), 2)]
-  group_map = [for group in local.accounts : merge(group, { "perms" = element(split("-", group.name), 3), "account" = "aws" })]
+  app_groups     = [for group in data.okta_groups.okta_groups.groups : group if(var.app_name == element(split("-", group.name), 1))]
+  role_groups    = [for group in local.app_groups : merge(group, { "role" = element(split("-", group.name), 3) })]
+  
+#  merged_settings_json = 
+  
+  account_info   = { for name, account in var.accounts : name => merge(account, { "okta_appname" = var.okta_appname, "app_display_name" = var.app_display_name, app_settings_json = local.app_settings_json }) }
+  account_groups = { for name, info in local.account_info : name => merge(info, { "groups" = [for group in local.role_groups : group if name == element(split("-", group.name), 2)] }) }
 
-
-  app_settings_json = {  
+app_settings_json =  {  
   # AppFilter set by variable in variables.tf to restrict source of users
   "appFilter" : "${var.aws_saml_app_filter}",
   "awsEnvironmentType" : "aws.amazon",
@@ -42,21 +45,24 @@ locals {
     "useGroupMapping" : true,
     "identityProviderArn" : "aws_iam_saml_provider.${var.aws_saml_provider_name}.arn",
     }
+ 
 }
 
 
 
 data "aws_iam_policy" "valid_policies" {
-  for_each = toset([ for group in local.group_map : group.perms ])
+  for_each = toset(flatten([for account, settings  in local.account_groups : [ for group, attributes  in settings.groups :  attributes.role ] ]))
   name     = each.value
 }
 
 
 
 resource "aws_iam_saml_provider" "saml_provider" {
-  for_each               = toset([ for account in local.accounts : account.account ])
+  for_each               = module.saml-app.saml-app 
+#  for_each               =  local.account_groups
   name                   = var.aws_saml_provider_name
-  saml_metadata_document = join("", [ for metadata in module.saml-app.saml-metadata : metadata.metadata  ])
+  saml_metadata_document = each.value.metadata
+# saml_metadata_document = join("", [ for metadata in module.saml-app.saml-app : metadata.metadata  ])
   tags = {
     "Name" = "okta sso saml provider"
   }
@@ -104,10 +110,6 @@ resource "aws_iam_role" "okta-role" {
 
 module "saml-app" {
   source            = "../../../modules/accounts/saml-app/"
-  app               = var.app
-  okta-appname      = var.okta-appname
-  groups            = local.group_map
-  accounts          = [ for group in local.group_map : group.account ]
-  app_links_json    = var.app_links_json
-  app_settings_json = local.app_settings_json
+  accounts          = local.account_groups
+
 }

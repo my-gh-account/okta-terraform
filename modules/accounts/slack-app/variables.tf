@@ -1,15 +1,20 @@
-variable "app" {
-  type = string
+variable "app_name" {
+  type    = string
   default = "slack"
 }
 
-variable "okta-appname" {
-  type = string
+variable "okta_appname" {
+  type    = string
+  default = "slack"
+}
+
+variable "app_display_name" {
+  type    = string
   default = "slack"
 }
 
 variable "accounts" {
-  type = list(string)
+  type = map(any)
 }
 
 variable "app_settings_json" {
@@ -17,9 +22,3 @@ variable "app_settings_json" {
   default = {}
 }
 
-variable "app_links_json" {
-  type    = map(bool)
-  default = {
-    slack_ink = true
-  }
-}
