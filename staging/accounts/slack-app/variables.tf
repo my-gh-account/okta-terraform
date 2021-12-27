@@ -67,11 +67,11 @@ variable "accounts" {
       app_links_json = {
         slack_ink = true
       },
-      "security_team" = {
-        app_links_json = {
-          slack_ink = true
-        },
-      }
+#      "security_team" = {
+#        app_links_json = {
+#          slack_ink = true
+#        },
+#      }
     }
   }
 }

@@ -77,16 +77,16 @@ variable "accounts" {
         sites    = false
       },
     },
-    "deserthome.com" = {
-      app_links_json = {
-        accounts = true
-        calendar = true
-        drive    = true
-        keep     = false
-        mail     = false
-        sites    = false
-      },
-    }
+#    "deserthome.com" = {
+#      app_links_json = {
+#        accounts = true
+#        calendar = true
+#        drive    = true
+#        keep     = false
+#        mail     = false
+#        sites    = false
+#      },
+#    }
   }
 }
 
