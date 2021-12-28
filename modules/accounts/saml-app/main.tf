@@ -19,7 +19,7 @@ resource "okta_app_saml" "saml_app" {
   app_links_json      = try(jsonencode(each.value.app_links_json), "{}")
   app_settings_json   = jsonencode(each.value.app_settings_json != "" ? merge({ domain = each.key }, each.value.app_settings_json) : { domain = each.key })
   label               = "${each.value.app_display_name} ${each.key}"
-  preconfigured_app   = each.value.okta_appname
+  preconfigured_app   = var.okta_appname
   default_relay_state = try(each.value.default_relay_state, "")
   features            = []
   lifecycle {
