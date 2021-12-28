@@ -50,7 +50,3 @@ module "saml-app" {
 }
 
 
-
-output "groups" {
-  value = local.app_group_assignments
-}
