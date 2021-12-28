@@ -76,5 +76,3 @@ module "aws-app" {
   aws_saml_app_filter    = var.aws_saml_app_filter
   aws_saml_provider_name = var.aws_saml_provider_name
 }
-
-

@@ -73,14 +73,13 @@ variable "accounts" {
 
       },
     },
-    "deserthome.com" = {
-      default_relay_state = "https://console.cloud.google.com"
-      app_links_json = {
-        cloudconsole_link = true
-
-      },
-
-    }
+    #    "deserthome.com" = {
+    #      default_relay_state = "https://console.cloud.google.com"
+    #      app_links_json = {
+    #        cloudconsole_link = true
+    #      },
+    #
+    #    },
     "deserthomes.com" = {
       default_relay_state = "https://console.cloud.google.com"
       app_links_json = {

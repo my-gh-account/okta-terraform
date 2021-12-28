@@ -17,23 +17,21 @@ terraform {
   }
 }
 
-
-
-#data "aws_caller_identity" "current" {}
-
-
 data "okta_groups" "okta_groups" {}
 
+data "aws_iam_policy" "valid_policies" {
+  for_each = { for group in local.app_groups : group.name => group }
+  name     = each.value.role
+}
+
 locals {
-  app_groups     = [for group in data.okta_groups.okta_groups.groups : group if(var.app_name == element(split("-", group.name), 1))]
-  role_groups    = [for group in local.app_groups : merge(group, { "role" = element(split("-", group.name), 3) })]
+ app_groups     = [for group in data.okta_groups.okta_groups.groups : merge(group, { "role" = element(split("-", group.name ), 3), "account_name" = element(split("-", group.name), 2)}) if(var.app_name == element(split("-", group.name), 1)) ] 
+ app_group_assignments = [ for group  in local.app_groups :  group if contains(keys(var.accounts), group.account_name)]
 
+  app_configuration   = { for name, account in var.accounts : name => merge(account, { "app_display_name" = var.app_display_name, app_settings_json = var.app_settings_json }) }
 
-
-  account_info   = { for name, account in var.accounts : name => merge(account, { "okta_appname" = var.okta_appname, "app_display_name" = var.app_display_name, app_settings_json = local.app_settings_json }) }
-  account_groups = { for name, info in local.account_info : name => merge(info, { "groups" = [for group in local.role_groups : group if name == element(split("-", group.name), 2)] }) }
-
-
+#  app_users    = { for user in data.okta_users.gcpUsers.users : user.login =>  merge({"id" = user.id},  jsondecode(user.custom_profile_attributes)) }
+#  app_user_assignments = flatten([ for username, user  in local.app_users : distinct([ for role in user.gcpRoles: { "user" = username , "account_name" = element(split("|", role), 1), "user_id" = user.id } ])])
 
 app_settings_json =  {  
   # AppFilter set by variable in variables.tf to restrict source of users
@@ -52,15 +50,6 @@ app_settings_json =  {
  
 }
 
-
-
-data "aws_iam_policy" "valid_policies" {
-  for_each = toset(flatten([for account, settings  in local.account_groups : [ for group, attributes  in settings.groups :  attributes.role ] ]))
-  name     = each.value
-}
-
-
-
 resource "aws_iam_saml_provider" "saml_provider" {
   for_each               = module.saml-app.saml-app 
   name                   = var.aws_saml_provider_name
@@ -71,12 +60,12 @@ resource "aws_iam_saml_provider" "saml_provider" {
 }
 
 data "aws_iam_policy_document" "instance-assume-role-policy" {
-  statement {
+ statement {
     actions = ["sts:AssumeRoleWithSAML"]
-
+   
     principals {
       type        = "Federated"
-      identifiers = [for provider in aws_iam_saml_provider.saml_provider : provider.arn ]
+     identifiers = [for provider in aws_iam_saml_provider.saml_provider : provider.arn ]
     }
 
     condition {
@@ -89,8 +78,6 @@ data "aws_iam_policy_document" "instance-assume-role-policy" {
     }
   }
 }
-
-
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # ROLE CREATION
@@ -112,6 +99,9 @@ resource "aws_iam_role" "okta-role" {
 
 module "saml-app" {
   source            = "../../../modules/accounts/saml-app/"
-  accounts          = local.account_groups
-
+  accounts          = var.accounts
+  okta_appname     = var.okta_appname
+  app_configuration = local.app_configuration
+#  user_assignments = local.app_user_assignments
+  group_assignments = local.app_group_assignments 
 }

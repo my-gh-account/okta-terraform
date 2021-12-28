@@ -9,7 +9,6 @@ variable "aws_saml_provider_name" {
   default = "Okta-SSO"
 }
 
-
 #-------------------------------------------------------------------------------------------------------------------------------------
 # AWS FILTER FOR ORIGIN APPS 
 # This refuses to let user accounts from other sources than aren't okta use this app to gain access to AWS.  Changing this will
@@ -22,9 +21,6 @@ variable "aws_saml_app_filter" {
   type    = string
   default = "okta"
 }
-
-
-
 
 variable "app_name" {
   type    = string
@@ -49,6 +45,7 @@ variable "accounts" {
     },
   }
 }
+
 variable "app_settings_json" {
   type    = map(any)
   default = {}

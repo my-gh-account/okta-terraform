@@ -19,15 +19,14 @@ terraform {
   required_providers {
     okta = {
       source = "okta/okta"
-   }
-   google = {
-     source  = "hashicorp/google"
-     version = "4.5.0"
+    }
+    google = {
+      source  = "hashicorp/google"
+      version = "4.5.0"
+    }
   }
-
 }
 
-  }
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # VAULT VARIABLES 
@@ -73,12 +72,6 @@ module "google-cloud" {
   app_display_name  = var.app_display_name
   accounts          = var.accounts
   app_settings_json = var.app_settings_json
-  cloud-roles       = "gcpRoles"
+  #  cloud-roles       = "gcpRoles"
 }
 
-
-
-
-output "okta_users" {
-  value = module.google-cloud.users
-}

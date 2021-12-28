@@ -34,11 +34,6 @@ variable "token" {
   default = "api_token"
 }
 
-
-
-
-
-
 variable "app_name" {
   description = "Name to use in okta groups configuration to specify the app"
   type        = string
@@ -50,9 +45,6 @@ variable "app_display_name" {
   type        = string
   default     = "Google Workspaces"
 }
-
-
-
 
 
 variable "app_settings_json" {

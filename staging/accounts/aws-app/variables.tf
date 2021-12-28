@@ -15,13 +15,11 @@ variable "vault_okta_secret_path" {
   default     = "secret/okta_creds"
 }
 
-
 variable "okta_org_name" {
   description = "The okta account to connect to"
   type        = string
   default     = "dev-64024424"
 }
-
 
 variable "okta_account_url" {
   description = "base okta url"
@@ -60,7 +58,6 @@ variable "aws_saml_provider_name" {
 }
 
 
-
 #-------------------------------------------------------------------------------------------------------------------------------------
 # AWS FILTER FOR ORIGIN APPS 
 # This refuses to let user accounts from other sources than aren't okta use this app to gain access to AWS.  Changing this will
@@ -75,7 +72,6 @@ variable "aws_saml_app_filter" {
   default     = "okta"
 }
 
-
 variable "accounts" {
   description = "Array of account names or domains for the app"
   type        = map(any)
@@ -84,8 +80,6 @@ variable "accounts" {
       app_links_json = {
         login     = true
       },
-
-
     },
   }
 }

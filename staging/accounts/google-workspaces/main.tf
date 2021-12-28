@@ -64,5 +64,3 @@ module "google-workspaces" {
   accounts          = var.accounts
   app_settings_json = var.app_settings_json
 }
-
-

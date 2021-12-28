@@ -82,7 +82,7 @@ module "okta-users" {
       login      = "testuser@example.com"
       email      = "testuser@example.com"
       custom_profile_attributes   = {
-        gcpRoles =  ["roles/iam.workloadIdentityPoolAdmin|deserthomescleaning.com|782936128004", "roles/cloudjobdiscovery.admin|deserthomescleaning.com|782936128004", "roles/dialogflow.aamViewer|deserthomescleaning.com|782936128004"]
+        gcpRoles =  ["roles/iam.workloadIdentityPoolAdmin|deserthomescleaning.com|782936128004", "roles/cloudjobdiscovery.admin|deserthomescleaning.com|782936128004", "roles/dialogflow.aamViewer|deserthomes.com|782936128004"]
       }
     },
     {
@@ -91,10 +91,87 @@ module "okta-users" {
       login      = "test2@deserthomescleaning.com"
       email      = "test2@deserthomescleaning.com"
       custom_profile_attributes   = {
-        gcpRoles =  ["roles/iam.workloadIdentityPoolAdmin|deserthomescleaning.com|782936128004", "roles/cloudjobdiscovery.admin|deserthomescleaning.com|782936128004", "roles/dialogflow.aamViewer|deserthomescleaning.com|782936128004"]
+        gcpRoles =  ["roles/iam.workloadIdentityPoolAdmin|deserthomescleaning.com|782936128004", "roles/cloudjobdiscovery.admin|deserthomescleaning.com|782936128004", "roles/dialogflow.aamViewer|deserthomes.com|782936128004"]
       }
     },
 
   ]
+}
+
+
+
+
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+# OKTA RBAC RULES TO GROUP MAPPING 
+# This is where you can specify the name of the app you're giving access to, along with the RBAC rule.  Inside the okta-groups module
+# this will create a rule named app-rulename.  For aws, specify rule name as aws-ACCOUNTID-IAMPolicy to have them automatically mapped
+# to a role generated for this group, with the same name as the policy it will attach to.  The aws app policy will error out if you
+# specify a role name for terraform configured aws account that doesn't exist, so we don't end up creating lots of misconfigured
+# iam roles accidentally
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+module "okta-groups" {
+  source = "../../../modules/accounts/okta-groups/"
+
+  apps = {
+    #AWS Rules format:  aws-accountnumber-s3Policy
+    "aws-975678609170-AdministratorAccess" = { rule = join(" ", [ # This join gives us a better way to specify larger, more complex rules on multiple lines.
+      "user.email == \"putman.patrick@gmail.com\" OR",           # Admin
+      "user.email == \"sally@example.com\"        OR",           # CTO      
+#      "user.email == \"bob@example.com\"          OR",
+      "user.email == \"test@deserthomescleaning.com\""
+      ])
+    },
+    "aws-975678609170-test_policy3"        = { rule = "user.email == \"putman.patrick@gmail.com\"" },
+    "aws-975678609170-AmazonS3FullAccess" = { rule = join(" ", [ # This join gives us a better way to specify larger, more complex rules on multiple lines.
+      "user.email == \"putman.patrick@gmail.com\" OR",           # Admin
+#      "user.email == \"sally@example.com\"        OR",           # CTO      
+#      "user.email == \"bob@example.com\"          OR",
+      "user.email == \"test@deserthomescleaning.com\""
+      ])
+    },
+#
+#    #Slack Rules Formation:  slack-workspace
+    "slack-deserthomescleaning" = { rule = join(" ", [
+      "user.email == \"putman.patrick@gmail.com\" OR",
+      "user.email == \"test@deserthomescleaning.com\""
+      ])
+    },
+    "slack-security_team" = { rule = join(" ", [ 
+      "user.email == \"putman.patrick@gmail.com\" OR",
+      "user.email == \"patrick@teramind.co\""
+      ])},
+#
+    #Google Workspaces
+#    "google-deserthomescleaning.com-test2" = { rule = join(" ", [
+#      "user.email == \"test@deserthomescleaning.com\" OR",
+#      "user.email == \"patrick@teramind.co\" OR ",
+#      "user.email == \"test2@deserthomescleaning.com\"",
+#      ])
+#    },
+    #    "google-deserthome.com-test" = { rule = join(" ", [
+    #      "user.email == \"patrick@deserthomescleaning.com\" OR",
+    #      "user.email == \"test@deserthomescleaning.com\"",
+    #      ])
+    #    },
+    #Google Cloud 
+#    "google-deserthomescleaning.com-test" = { rule = join(" ", [
+#      "user.email == \"test@deserthomescleaning.com\" OR",
+#      "user.email == \"patrick@teramind.co\" OR",
+#      "user.email == \"putman.patrick@gmail.com\" OR",
+#      "user.email == \"test2@deserthomescleaning.com\"",
+#      ])
+#    },
+    "gcp-deserthome.com-test" = { rule = join(" ", [
+      "user.email == \"patrick@deserthomescleaning.com\" OR",
+      "user.email == \"test@deserthomescleaning.com\" OR",
+      "user.email == \"test2@deserthomescleaning.com\"",
+
+      ])
+    },
+
+  }
 }
 
