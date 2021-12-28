@@ -43,3 +43,12 @@ resource "okta_app_group_assignments" "app_assignments" {
     }
   }
 }
+
+data "okta_app_user_assignments" "app-users" {
+  for_each  = okta_app_saml.saml_app
+  id = each.value.id
+}
+
+output "app-users" {
+  value = data.okta_app_user_assignments.app-users
+}

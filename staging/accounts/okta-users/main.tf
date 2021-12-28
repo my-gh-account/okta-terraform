@@ -81,6 +81,9 @@ module "okta-users" {
       last_name  = "User"
       login      = "testuser@example.com"
       email      = "testuser@example.com"
+      custom_profile_attributes   = {
+        gcpRoles =  ["roles/iam.workloadIdentityPoolAdmin|deserthomescleaning.com|782936128004", "roles/cloudjobdiscovery.admin|deserthomescleaning.com|782936128004", "roles/dialogflow.aamViewer|deserthomescleaning.com|782936128004"]
+      }
     },
     {
       first_name = "Test"

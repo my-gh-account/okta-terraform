@@ -39,16 +39,16 @@ app_settings_json =  {
   # AppFilter set by variable in variables.tf to restrict source of users
   "appFilter" : "${var.aws_saml_app_filter}",
   "awsEnvironmentType" : "aws.amazon",
-    # Regex responsponsible for detecting group is meant to go to aws, with account ID, and mapped to the proper role
-    "groupFilter" : "^app\\-aws\\-(?{{accountid}}\\d+)\\-(?{{role}}[\\w\\-]+)$"
-    "joinAllRoles" : true,
-    "loginURL" : "https://console.aws.amazon.com/ec2/home",
-    "roleValuePattern" : "arn:aws:iam::$${accountid}:saml-provider/${var.aws_saml_provider_name},arn:aws:iam::$${accountid}:role/$${role}",
-    "sessionDuration" : 3600,
-    # Use Group Mapping will make the above regex work, so groups are automatically assigned to Role at specified account
-    "useGroupMapping" : true,
-    "identityProviderArn" : "aws_iam_saml_provider.${var.aws_saml_provider_name}.arn",
-    }
+  # Regex responsponsible for detecting group is meant to go to aws, with account ID, and mapped to the proper role
+  "groupFilter" : "^app\\-aws\\-(?{{accountid}}\\d+)\\-(?{{role}}[\\w\\-]+)$"
+  "joinAllRoles" : true,
+  "loginURL" : "https://console.aws.amazon.com/ec2/home",
+  "roleValuePattern" : "arn:aws:iam::$${accountid}:saml-provider/${var.aws_saml_provider_name},arn:aws:iam::$${accountid}:role/$${role}",
+  "sessionDuration" : 3600,
+  # Use Group Mapping will make the above regex work, so groups are automatically assigned to Role at specified account
+  "useGroupMapping" : true,
+  "identityProviderArn" : "aws_iam_saml_provider.${var.aws_saml_provider_name}.arn",
+  }
  
 }
 
