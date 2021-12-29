@@ -79,10 +79,10 @@ module "okta-users" {
     {
       first_name = "Test"
       last_name  = "User"
-      login      = "testuser@example.com"
-      email      = "testuser@example.com"
+      login      = "test@deserthomescleaning.com"
+      email      = "test@deserthomescleaning.com"
       custom_profile_attributes   = {
-        gcpRoles =  ["roles/iam.workloadIdentityPoolAdmin|deserthomescleaning.com|782936128004", "roles/cloudjobdiscovery.admin|deserthomescleaning.com|782936128004", "roles/dialogflow.aamViewer|deserthomes.com|782936128004"]
+        gcpRoles =  ["roles/iam.workloadIdentityPoolAdmin|deserthomescleaning.com|782936128004"]#, "roles/cloudjobdiscovery.admin|deserthomescleaning.com|782936128004"]
       }
     },
     {
@@ -91,7 +91,7 @@ module "okta-users" {
       login      = "test2@deserthomescleaning.com"
       email      = "test2@deserthomescleaning.com"
       custom_profile_attributes   = {
-        gcpRoles =  ["roles/iam.workloadIdentityPoolAdmin|deserthomescleaning.com|782936128004", "roles/cloudjobdiscovery.admin|deserthomescleaning.com|782936128004", "roles/dialogflow.aamViewer|deserthomes.com|782936128004"]
+        gcpRoles =  ["roles/iam.workloadIdentityPoolAdmin|deserthomescleaning.com|782936128004", "roles/cloudjobdiscovery.admin|deserthomescleaning.com|782936128004"]
       }
     },
 
@@ -132,8 +132,7 @@ module "okta-groups" {
       "user.email == \"test@deserthomescleaning.com\""
       ])
     },
-#
-#    #Slack Rules Formation:  slack-workspace
+    #Slack Rules Formation:  slack-workspace
     "slack-deserthomescleaning" = { rule = join(" ", [
       "user.email == \"putman.patrick@gmail.com\" OR",
       "user.email == \"test@deserthomescleaning.com\""
@@ -143,7 +142,6 @@ module "okta-groups" {
       "user.email == \"putman.patrick@gmail.com\" OR",
       "user.email == \"patrick@teramind.co\""
       ])},
-#
     #Google Workspaces
 #    "google-deserthomescleaning.com-test2" = { rule = join(" ", [
 #      "user.email == \"test@deserthomescleaning.com\" OR",
@@ -151,12 +149,11 @@ module "okta-groups" {
 #      "user.email == \"test2@deserthomescleaning.com\"",
 #      ])
 #    },
-    #    "google-deserthome.com-test" = { rule = join(" ", [
-    #      "user.email == \"patrick@deserthomescleaning.com\" OR",
-    #      "user.email == \"test@deserthomescleaning.com\"",
-    #      ])
-    #    },
-    #Google Cloud 
+#    "google-deserthome.com-test" = { rule = join(" ", [
+#      "user.email == \"patrick@deserthomescleaning.com\" OR",
+#      "user.email == \"test@deserthomescleaning.com\"",
+#      ])
+#    },
 #    "google-deserthomescleaning.com-test" = { rule = join(" ", [
 #      "user.email == \"test@deserthomescleaning.com\" OR",
 #      "user.email == \"patrick@teramind.co\" OR",
@@ -164,13 +161,14 @@ module "okta-groups" {
 #      "user.email == \"test2@deserthomescleaning.com\"",
 #      ])
 #    },
-    "gcp-deserthome.com-test" = { rule = join(" ", [
-      "user.email == \"patrick@deserthomescleaning.com\" OR",
-      "user.email == \"test@deserthomescleaning.com\" OR",
-      "user.email == \"test2@deserthomescleaning.com\"",
-
-      ])
-    },
+#     # Google Cloud
+#    "gcp-deserthome.com-test" = { rule = join(" ", [
+#      "user.email == \"patrick@deserthomescleaning.com\" OR",
+#      "user.email == \"test@deserthomescleaning.com\" OR",
+#      "user.email == \"test2@deserthomescleaning.com\"",
+#
+#      ])
+#    },
 
   }
 }
