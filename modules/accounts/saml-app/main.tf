@@ -27,7 +27,7 @@ resource "okta_app_saml" "saml_app" {
   default_relay_state = try(each.value.default_relay_state, "")
   features            = []
   lifecycle {
-    ignore_changes = [users, groups, app_settings_json]
+    ignore_changes = [users, groups, app_settings_json, features]
   }
 }
 

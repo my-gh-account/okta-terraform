@@ -18,7 +18,7 @@ terraform {
 terraform {
   required_providers {
     okta = {
-      source  = "okta/okta"
+      source = "okta/okta"
     }
   }
 }
@@ -43,7 +43,7 @@ data "vault_generic_secret" "okta_creds" {
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 provider "okta" {
-  org_name  = var.okta_org_name 
+  org_name  = var.okta_org_name
   base_url  = var.okta_account_url
   api_token = data.vault_generic_secret.okta_creds.data[var.api_token]
 }
@@ -59,10 +59,10 @@ module "okta-users" {
   source = "../../../modules/accounts/okta-users/"
   okta_users = [
     {
-    first_name = "Patrick"
-    last_name  = "Putman"
-    login      = "putman.patrick@gmail.com"
-    email      = "putman.patrick@gmail.com"
+      first_name = "Patrick"
+      last_name  = "Putman"
+      login      = "putman.patrick@gmail.com"
+      email      = "putman.patrick@gmail.com"
     },
     {
       first_name = "Bob"
@@ -81,8 +81,8 @@ module "okta-users" {
       last_name  = "User"
       login      = "test@deserthomescleaning.com"
       email      = "test@deserthomescleaning.com"
-      custom_profile_attributes   = {
-        gcpRoles =  ["roles/iam.workloadIdentityPoolAdmin|deserthomescleaning.com|782936128004"]#, "roles/cloudjobdiscovery.admin|deserthomescleaning.com|782936128004"]
+      custom_profile_attributes = {
+        gcpRoles = ["roles/iam.workloadIdentityPoolAdmin|deserthomescleaning.com|782936128004"] #, "roles/cloudjobdiscovery.admin|deserthomescleaning.com|782936128004"]
       }
     },
     {
@@ -90,8 +90,8 @@ module "okta-users" {
       last_name  = "User"
       login      = "test2@deserthomescleaning.com"
       email      = "test2@deserthomescleaning.com"
-      custom_profile_attributes   = {
-        gcpRoles =  ["roles/iam.workloadIdentityPoolAdmin|deserthomescleaning.com|782936128004", "roles/cloudjobdiscovery.admin|deserthomescleaning.com|782936128004"]
+      custom_profile_attributes = {
+        gcpRoles = ["roles/iam.workloadIdentityPoolAdmin|deserthomescleaning.com|782936128004", "roles/cloudjobdiscovery.admin|deserthomescleaning.com|782936128004"]
       }
     },
 
@@ -118,17 +118,17 @@ module "okta-groups" {
   apps = {
     #AWS Rules format:  aws-accountnumber-s3Policy
     "aws-975678609170-AdministratorAccess" = { rule = join(" ", [ # This join gives us a better way to specify larger, more complex rules on multiple lines.
-      "user.email == \"putman.patrick@gmail.com\" OR",           # Admin
-      "user.email == \"sally@example.com\"        OR",           # CTO      
-#      "user.email == \"bob@example.com\"          OR",
+      "user.email == \"putman.patrick@gmail.com\" OR",            # Admin
+      "user.email == \"sally@example.com\"        OR",            # CTO      
+      #"user.email == \"bob@example.com\"          OR",
       "user.email == \"test@deserthomescleaning.com\""
       ])
     },
-    "aws-975678609170-test_policy3"        = { rule = "user.email == \"putman.patrick@gmail.com\"" },
+    "aws-975678609170-test_policy3" = { rule = "user.email == \"putman.patrick@gmail.com\"" },
     "aws-975678609170-AmazonS3FullAccess" = { rule = join(" ", [ # This join gives us a better way to specify larger, more complex rules on multiple lines.
       "user.email == \"putman.patrick@gmail.com\" OR",           # Admin
-#      "user.email == \"sally@example.com\"        OR",           # CTO      
-#      "user.email == \"bob@example.com\"          OR",
+      #      "user.email == \"sally@example.com\"        OR",           # CTO      
+      #      "user.email == \"bob@example.com\"          OR",
       "user.email == \"test@deserthomescleaning.com\""
       ])
     },
@@ -138,37 +138,37 @@ module "okta-groups" {
       "user.email == \"test@deserthomescleaning.com\""
       ])
     },
-    "slack-security_team" = { rule = join(" ", [ 
+    "slack-security_team" = { rule = join(" ", [
       "user.email == \"putman.patrick@gmail.com\" OR",
       "user.email == \"patrick@teramind.co\""
-      ])},
+    ]) },
     #Google Workspaces
-#    "google-deserthomescleaning.com-test2" = { rule = join(" ", [
-#      "user.email == \"test@deserthomescleaning.com\" OR",
-#      "user.email == \"patrick@teramind.co\" OR ",
-#      "user.email == \"test2@deserthomescleaning.com\"",
-#      ])
-#    },
-#    "google-deserthome.com-test" = { rule = join(" ", [
-#      "user.email == \"patrick@deserthomescleaning.com\" OR",
-#      "user.email == \"test@deserthomescleaning.com\"",
-#      ])
-#    },
-#    "google-deserthomescleaning.com-test" = { rule = join(" ", [
-#      "user.email == \"test@deserthomescleaning.com\" OR",
-#      "user.email == \"patrick@teramind.co\" OR",
-#      "user.email == \"putman.patrick@gmail.com\" OR",
-#      "user.email == \"test2@deserthomescleaning.com\"",
-#      ])
-#    },
-#     # Google Cloud
-#    "gcp-deserthome.com-test" = { rule = join(" ", [
-#      "user.email == \"patrick@deserthomescleaning.com\" OR",
-#      "user.email == \"test@deserthomescleaning.com\" OR",
-#      "user.email == \"test2@deserthomescleaning.com\"",
-#
-#      ])
-#    },
+    #    "google-deserthomescleaning.com-test2" = { rule = join(" ", [
+    #      "user.email == \"test@deserthomescleaning.com\" OR",
+    #      "user.email == \"patrick@teramind.co\" OR ",
+    #      "user.email == \"test2@deserthomescleaning.com\"",
+    #      ])
+    #    },
+    #    "google-deserthome.com-test" = { rule = join(" ", [
+    #      "user.email == \"patrick@deserthomescleaning.com\" OR",
+    #      "user.email == \"test@deserthomescleaning.com\"",
+    #      ])
+    #    },
+    #    "google-deserthomescleaning.com-test" = { rule = join(" ", [
+    #      "user.email == \"test@deserthomescleaning.com\" OR",
+    #      "user.email == \"patrick@teramind.co\" OR",
+    #      "user.email == \"putman.patrick@gmail.com\" OR",
+    #      "user.email == \"test2@deserthomescleaning.com\"",
+    #      ])
+    #    },
+    #     # Google Cloud
+    #    "gcp-deserthome.com-test" = { rule = join(" ", [
+    #      "user.email == \"patrick@deserthomescleaning.com\" OR",
+    #      "user.email == \"test@deserthomescleaning.com\" OR",
+    #      "user.email == \"test2@deserthomescleaning.com\"",
+    #
+    #      ])
+    #    },
 
   }
 }

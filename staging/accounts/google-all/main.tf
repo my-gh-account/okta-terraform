@@ -41,6 +41,13 @@ data "vault_generic_secret" "okta_creds" {
   path = var.vault_okta_secret_path
 }
 
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+# GOOGLE CREDENTIALS
+# Google api token file
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+
 provider "google" {
   project     = "terraform-336311"
   region      = "us-central1"
@@ -82,6 +89,3 @@ module "google-workspaces" {
   app_settings_json = var.google_workspaces_app_settings_json
 }
 
-output "assignments" {
-  value = module.google-cloud.assignments
-}
