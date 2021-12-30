@@ -49,4 +49,3 @@ module "saml-app" {
   group_assignments = local.app_group_assignments 
 }
 
-

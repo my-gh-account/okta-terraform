@@ -15,6 +15,12 @@ variable "vault_okta_secret_path" {
   default     = "secret/okta_creds"
 }
 
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+# OKTA API CREDENTIALS
+# Credentials for the okta api
+#-------------------------------------------------------------------------------------------------------------------------------------
+
 variable "okta_org_name" {
   description = "The okta account to connect to"
   type        = string
@@ -32,7 +38,10 @@ variable "token" {
   default = "api_token"
 }
 
-###################### Google Cloud Configuration ##########################
+#-------------------------------------------------------------------------------------------------------------------------------------
+# GOOGLE CLOUD CONFIGURATION
+# Configuration for the google cloud
+#-------------------------------------------------------------------------------------------------------------------------------------
 
 variable "google_cloud_app_name" {
   description = "Name to use in okta groups configuration to specify the app"
@@ -78,7 +87,11 @@ variable "google_cloud_accounts" {
   }
 }
 
-###################### Google Workspaces Configuration ##########################
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+# GOOGLE  WORKSPACES CONFIGURATION
+# Configuration for Google Workspaces App
+#-------------------------------------------------------------------------------------------------------------------------------------
 
 variable "google_workspaces_app_name" {
   description = "Name to use in okta groups configuration to specify the app"

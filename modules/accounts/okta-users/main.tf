@@ -25,6 +25,7 @@ resource "okta_user" "user" {
   last_name  = each.value.last_name
   login      = each.value.login
   email      = each.value.email
+  depends_on = [okta_user_schema_property.gcpRoles]
   custom_profile_attributes = try(jsonencode ( each.value.custom_profile_attributes), null)
 
   lifecycle {
@@ -32,6 +33,35 @@ resource "okta_user" "user" {
   }
 }
 
-output "okta_user" {
-  value = var.okta_users
+
+data "okta_user_type" "user" {
+  name = "User"
+}
+
+resource "okta_user_schema_property" "gcpRoles" {
+    array_enum  = []
+    array_type  = "string"
+    description = "Google Cloud Profile Roles"
+    index       = "gcpRoles"
+    master      = "OKTA"
+    permissions = "READ_ONLY"
+    required    = false
+    scope       = "NONE"
+    title       = "GCP Roles"
+    type        = "array"
+    user_type   = "${data.okta_user_type.user.id}"
+}
+
+resource "okta_user_schema_property" "googleWorkspaceAdminRoles" {
+    array_enum  = []
+    array_type  = "string"
+    description = "Google Workspaces Roles"
+    index       = "gwsRoles"
+    master      = "OKTA"
+    permissions = "READ_ONLY"
+    required    = false
+    scope       = "NONE"
+    title       = "Google Workspace Roles"
+    type        = "array"
+    user_type   = "${data.okta_user_type.user.id}"
 }

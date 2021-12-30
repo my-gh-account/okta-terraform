@@ -30,10 +30,11 @@ variable "okta_account_url" {
 }
 
 
-
-
-
-
+#-------------------------------------------------------------------------------------------------------------------------------------
+# OKTA APP NAMES
+# The okta app_name is the name we map to in the okta group rules, and the app_display_name is the name to display to users 
+# in the app in OKTA
+#-------------------------------------------------------------------------------------------------------------------------------------
 
 variable "app_name" {
   description = "Name to use in okta groups configuration to specify the app"
@@ -51,12 +52,15 @@ variable "app_display_name" {
 
 
 
+#-------------------------------------------------------------------------------------------------------------------------------------
+# CONFIGURATION SETTINGS FOR OKTA APPLICATION  
+# specify the accounts we're going to create applications for, and the custom settings for that application or account
+#-------------------------------------------------------------------------------------------------------------------------------------
+
 variable "app_settings_json" {
   type    = map(any)
   default = {}
 }
-
-
 
 
 variable "accounts" {

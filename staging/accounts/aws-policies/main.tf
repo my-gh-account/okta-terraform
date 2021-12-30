@@ -33,7 +33,6 @@ module "aws-policies" {
         }]
       })
     },
-
     {
       name        = "test_policy2"
       description = "a testing policy"
@@ -73,6 +72,5 @@ module "aws-policies" {
         }]
       })
     },
-
   ]
 }

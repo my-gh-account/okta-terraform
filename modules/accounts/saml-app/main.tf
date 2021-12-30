@@ -50,7 +50,3 @@ resource "okta_app_user" "user_assignments" {
   username = each.value.user
 } 
 
-#output "assigned_users" {
-#  value = data.okta_app_saml.app
-#}
-
