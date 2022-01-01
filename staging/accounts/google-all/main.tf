@@ -24,6 +24,11 @@ terraform {
       source  = "hashicorp/google"
       version = "4.5.0"
     }
+    googleworkspace = {
+      source  = "hashicorp/googleworkspace"
+      version = "~> 0.6.0"
+    }
+
   }
 }
 
@@ -55,6 +60,12 @@ provider "google" {
   credentials = file("~/.credentials")
 }
 
+provider "googleworkspace" {
+  customer_id             = "C02ku8l6j"
+  impersonated_user_email = "patrick@deserthomescleaning.com"
+  credentials             = file("~/.credentials")
+  oauth_scopes            = ["https://www.googleapis.com/auth/admin.directory.orgunit", "https://www.googleapis.com/auth/admin.directory.user", "https://www.googleapis.com/auth/admin.directory.group", "https://www.googleapis.com/auth/admin.directory.rolemanagement", "https://www.googleapis.com/auth/admin.directory.user.security", "https://www.googleapis.com/auth/admin.directory.domain", "https://www.googleapis.com/auth/admin.directory.customer", "https://www.googleapis.com/auth/cloud-platform", "https://www.googleapis.com/auth/admin.directory.rolemanagement"]
+}
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # OKTA CREDENTIALS
@@ -88,4 +99,7 @@ module "google-workspaces" {
   accounts          = var.google_workspaces_accounts
   app_settings_json = var.google_workspaces_app_settings_json
 }
+
+
+
 

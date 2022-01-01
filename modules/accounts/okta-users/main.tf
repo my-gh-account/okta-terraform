@@ -39,7 +39,6 @@ data "okta_user_type" "user" {
 }
 
 resource "okta_user_schema_property" "gcpRoles" {
-    array_enum  = []
     array_type  = "string"
     description = "Google Cloud Profile Roles"
     index       = "gcpRoles"
@@ -53,7 +52,6 @@ resource "okta_user_schema_property" "gcpRoles" {
 }
 
 resource "okta_user_schema_property" "googleWorkspaceAdminRoles" {
-    array_enum  = []
     array_type  = "string"
     description = "Google Workspaces Roles"
     index       = "gwsRoles"
@@ -64,4 +62,18 @@ resource "okta_user_schema_property" "googleWorkspaceAdminRoles" {
     title       = "Google Workspace Roles"
     type        = "array"
     user_type   = "${data.okta_user_type.user.id}"
+}
+
+
+resource "okta_user_schema_property" "google" {
+    description = "Google Workspace Domains"
+    index       = "google"
+    master      = "OKTA"
+    permissions = "READ_ONLY"
+    required    = false
+    scope       = "NONE"
+    title       = "Google Domain"
+    type        = "array"
+    user_type   = "${data.okta_user_type.user.id}"
+    array_type  = "string"
 }

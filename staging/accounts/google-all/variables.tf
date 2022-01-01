@@ -68,21 +68,7 @@ variable "google_cloud_accounts" {
       default_relay_state = "https://console.cloud.google.com"
       app_links_json = {
         cloudconsole_link = true
-
-      },
-    },
-    #    "deserthome.com" = {
-    #      default_relay_state = "https://console.cloud.google.com"
-    #      app_links_json = {
-    #        cloudconsole_link = true
-    #      },
-    #
-    #    },
-    "deserthomes.com" = {
-      default_relay_state = "https://console.cloud.google.com"
-      app_links_json = {
-        cloudconsole_link = true
-      },
+      }
     }
   }
 }
@@ -122,17 +108,7 @@ variable "google_workspaces_accounts" {
         keep     = false
         mail     = false
         sites    = false
-      },
-    },
-    #    "deserthome.com" = {
-    #      app_links_json = {
-    #        accounts = true
-    #        calendar = true
-    #        drive    = true
-    #        keep     = false
-    #        mail     = false
-    #        sites    = false
-    #      },
-    #    }
+      }
+    }
   }
 }

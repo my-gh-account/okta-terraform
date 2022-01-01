@@ -13,6 +13,7 @@ variable "user_assignments" {
 
 variable "group_assignments" {
   type = list(map(string))
+  default = []
 }
 
 variable "app_configuration" {
