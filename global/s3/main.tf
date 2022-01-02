@@ -1,8 +1,8 @@
-terraform {
-  backend "s3" {
-    key = "global/s3/terraform.tfstate"
-  }
-}
+#terraform {
+#  backend "s3" {
+#    key = "global/s3/terraform.tfstate"
+#  }
+#}
 
 provider "aws" {
     region  = "us-east-2"

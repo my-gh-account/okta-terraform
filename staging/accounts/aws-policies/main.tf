@@ -1,12 +1,6 @@
-terraform {
-  backend "s3" {
-    key = "staging/accounts/aws-policies/terraform.tfstate"
-  }
-}
-
 
 provider "aws" {
-  region = "us-east-2"
+  region = var.aws_region 
 }
 
 module "aws-policies" {
@@ -72,5 +66,27 @@ module "aws-policies" {
         }]
       })
     },
+    {
+      name        = "test_policy4"
+      description = "a testing policy"
+      path        = "/"
+      tags = {
+        name = "PatrickPolicy"
+      }
+      policy = jsonencode({
+        "Version" : "2012-10-17",
+        "Statement" : [{
+          "Effect" : "Allow",
+          "Action" : [
+            "directconnect:Describe*",
+            "directconnect:List*",
+            "ec2:DescribeVpnGateways",
+            "ec2:DescribeTransitGateways"
+          ],
+          "Resource" : "*"
+        }]
+      })
+    },
+
   ]
 }

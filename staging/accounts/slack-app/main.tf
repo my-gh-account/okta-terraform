@@ -1,16 +1,4 @@
 #-------------------------------------------------------------------------------------------------------------------------------------
-# OKTA S3 BACKEND
-# There's a number of reasons to use a backend instead of a local state, this is to use the specified key in s3 backend
-#-------------------------------------------------------------------------------------------------------------------------------------
-
-terraform {
-  backend "s3" {
-    key = "staging/accounts/slack-app/terraform.tfstate"
-  }
-}
-
-
-#-------------------------------------------------------------------------------------------------------------------------------------
 # OKTA PROVIDER VERSION REQUIREMENTS 
 # Okta's resource requires you specify this version to work
 #-------------------------------------------------------------------------------------------------------------------------------------
@@ -63,5 +51,3 @@ module "slack-app" {
   accounts          = var.accounts
   app_settings_json = var.app_settings_json
 }
-
-

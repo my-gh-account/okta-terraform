@@ -1,15 +1,4 @@
 #-------------------------------------------------------------------------------------------------------------------------------------
-# OKTA S3 BACKEND
-# There's a number of reasons to use a backend instead of a local state, this is to use the specified key in s3 backend
-#-------------------------------------------------------------------------------------------------------------------------------------
-
-terraform {
-  backend "s3" {
-    key = "staging/accounts/aws-app/terraform.tfstate"
-  }
-}
-
-#-------------------------------------------------------------------------------------------------------------------------------------
 # OKTA PROVIDER VERSION REQUIREMENTS 
 # Okta's version pinning
 #-------------------------------------------------------------------------------------------------------------------------------------
@@ -18,7 +7,6 @@ terraform {
   required_providers {
     okta = {
       source  = "okta/okta"
-      version = "~> 3.20"
     }
   }
 }
@@ -30,7 +18,7 @@ terraform {
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 provider "aws" {
-  region = "us-east-2"
+  region = var.aws_region
 }
 
 
@@ -56,7 +44,7 @@ data "vault_generic_secret" "okta_creds" {
 provider "okta" {
   org_name  = var.okta_org_name
   base_url  = var.okta_account_url
-  api_token = data.vault_generic_secret.okta_creds.data[var.token]
+  api_token = data.vault_generic_secret.okta_creds.data[var.api_token]
 }
 
 

@@ -1,14 +1,3 @@
-#-------------------------------------------------------------------------------------------------------------------------------------
-# OKTA S3 BACKEND
-# There's a number of reasons to use a backend instead of a local state, this is to use the specified key in s3 backend
-#-------------------------------------------------------------------------------------------------------------------------------------
-
-terraform {
-  backend "s3" {
-    key = "staging/accounts/okta-users/terraform.tfstate"
-  }
-}
-
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # OKTA PROVIDER VERSION REQUIREMENTS 
@@ -82,7 +71,7 @@ module "okta-users" {
       login      = "test@deserthomescleaning.com"
       email      = "test@deserthomescleaning.com"
       custom_profile_attributes = {
-        gcpRoles = ["roles/iam.workloadIdentityPoolAdmin|deserthomescleaning.com|782936128004","roles/cloudjobdiscovery.admin|deserthomescleaning.com|782936128004"]
+        gcpRoles = ["roles/iam.workloadIdentityPoolAdmin|deserthomescleaning.com|782936128004", "roles/cloudjobdiscovery.admin|deserthomescleaning.com|782936128004", "roles/owner|deserthomescleaning.com|782936128004"]
         gwsRoles = ["_GROUPS_ADMIN_ROLE", "_USER_MANAGEMENT_ADMIN_ROLE"]
         google    = ["deserthomescleaning.com"]
       }
@@ -93,7 +82,7 @@ module "okta-users" {
       login      = "test2@deserthomescleaning.com"
       email      = "test2@deserthomescleaning.com"
       custom_profile_attributes = {
-        gcpRoles = ["roles/iam.workloadIdentityPoolAdmin|deserthomescleaning.com|782936128004", "roles/cloudjobdiscovery.admin|deserthomescleaning.com|782936128004"]
+        gcpRoles = ["roles/iam.workloadIdentityPoolAdmin|deserthomescleaning.com|782936128004", "roles/cloudjobdiscovery.admin|deserthomescleaning.com|782936128004", "roles/owner|deserthomescleaning.com|782936128004"]
         gwsRoles = ["_GROUPS_ADMIN_ROLE"]
         google   = ["deserthomescleaning.com"]
       }
@@ -118,15 +107,12 @@ module "okta-groups" {
     #AWS Rules format:  aws-accountnumber-awsPolicyName
     "aws-975678609170-AdministratorAccess" = { rule = join(" ", [ # This join gives us a better way to specify larger, more complex rules on multiple lines.
       "user.email == \"putman.patrick@gmail.com\" OR",            # Admin
-      "user.email == \"sally@example.com\"        OR",            # CTO      
-      "user.email == \"bob@example.com\"",
-     # "user.email == \"test@deserthomescleaning.com\""
+      "user.email == \"test@deserthomescleaning.com\""
       ])
     },
     "aws-975678609170-test_policy3" = { rule = "user.email == \"test@deserthomescleaning.com\"" },
-    "aws-975678609170-AmazonS3FullAccess" = { rule = join(" ", [ # This join gives us a better way to specify larger, more complex rules on multiple lines.
-      "user.email == \"putman.patrick@gmail.com\"",           # Admin
-      #      "user.email == \"sally@example.com\"        OR",           # CTO      
+    "aws-975678609170-AmazonS3FullAccess" = { rule = join(" ", [  # This join gives us a better way to specify larger, more complex rules on multiple lines.
+      "user.email == \"putman.patrick@gmail.com\"",               # Admin
       #      "user.email == \"bob@example.com\"          OR",
       #"user.email == \"test@deserthomescleaning.com\""
       ])

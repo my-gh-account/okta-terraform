@@ -38,7 +38,6 @@ resource "okta_app_group_assignments" "group_assignments" {
   depends_on = [okta_app_saml.saml_app]
 
   group {
-    priority = 1
     id = each.value.id
   }
 }

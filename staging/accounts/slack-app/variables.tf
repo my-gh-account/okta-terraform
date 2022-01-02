@@ -6,27 +6,21 @@
 variable "vault_address" {
   description = "Hashicorp Vault Server Address"
   type        = string
-  default     = "http://127.0.0.1:8200"
 }
 
 variable "vault_okta_secret_path" {
   description = "The path to access the okta credentials in Vault"
   type        = string
-  default     = "secret/okta_creds"
 }
-
 
 variable "okta_org_name" {
   description = "The okta account to connect to"
   type        = string
-  default     = "dev-64024424"
 }
-
 
 variable "okta_account_url" {
   description = "base okta url"
   type        = string
-  default     = "okta.com"
 }
 
 
@@ -48,10 +42,6 @@ variable "app_display_name" {
   default     = "Slack"
 }
 
-
-
-
-
 #-------------------------------------------------------------------------------------------------------------------------------------
 # CONFIGURATION SETTINGS FOR OKTA APPLICATION  
 # specify the accounts we're going to create applications for, and the custom settings for that application or account
@@ -61,7 +51,6 @@ variable "app_settings_json" {
   type    = map(any)
   default = {}
 }
-
 
 variable "accounts" {
   description = "Array of account names or domains for the app"
@@ -79,4 +68,3 @@ variable "accounts" {
     }
   }
 }
-

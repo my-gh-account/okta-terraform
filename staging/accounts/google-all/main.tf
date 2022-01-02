@@ -1,16 +1,4 @@
 #-------------------------------------------------------------------------------------------------------------------------------------
-# OKTA S3 BACKEND
-# There's a number of reasons to use a backend instead of a local state, this is to use the specified key in s3 backend
-#-------------------------------------------------------------------------------------------------------------------------------------
-
-terraform {
-  backend "s3" {
-    key = "staging/accounts/google-all/terraform.tfstate"
-  }
-}
-
-
-#-------------------------------------------------------------------------------------------------------------------------------------
 # OKTA PROVIDER VERSION REQUIREMENTS 
 # Okta's resource requires you specify this version to work
 #-------------------------------------------------------------------------------------------------------------------------------------
@@ -19,14 +7,6 @@ terraform {
   required_providers {
     okta = {
       source = "okta/okta"
-    }
-    google = {
-      source  = "hashicorp/google"
-      version = "4.5.0"
-    }
-    googleworkspace = {
-      source  = "hashicorp/googleworkspace"
-      version = "~> 0.6.0"
     }
 
   }
@@ -54,18 +34,22 @@ data "vault_generic_secret" "okta_creds" {
 
 
 provider "google" {
-  project     = "terraform-336311"
-  region      = "us-central1"
-  zone        = "us-central1-c"
-  credentials = file("~/.credentials")
+  project     = var.google_terraform_project
+  region      = var.google_region
+  zone        = var.google_zone
+  credentials = file(var.google_credentials)
 }
 
+
+
 provider "googleworkspace" {
-  customer_id             = "C02ku8l6j"
-  impersonated_user_email = "patrick@deserthomescleaning.com"
-  credentials             = file("~/.credentials")
-  oauth_scopes            = ["https://www.googleapis.com/auth/admin.directory.orgunit", "https://www.googleapis.com/auth/admin.directory.user", "https://www.googleapis.com/auth/admin.directory.group", "https://www.googleapis.com/auth/admin.directory.rolemanagement", "https://www.googleapis.com/auth/admin.directory.user.security", "https://www.googleapis.com/auth/admin.directory.domain", "https://www.googleapis.com/auth/admin.directory.customer", "https://www.googleapis.com/auth/cloud-platform", "https://www.googleapis.com/auth/admin.directory.rolemanagement"]
+  customer_id             = var.google_customer_id
+  impersonated_user_email = var.google_impersonated_user_email
+  credentials             = file(var.google_credentials)
+  oauth_scopes            = var.google_oauth_scopes 
 }
+
+
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # OKTA CREDENTIALS
@@ -75,7 +59,7 @@ provider "googleworkspace" {
 provider "okta" {
   org_name  = var.okta_org_name
   base_url  = var.okta_account_url
-  api_token = data.vault_generic_secret.okta_creds.data[var.token]
+  api_token = data.vault_generic_secret.okta_creds.data[var.api_token]
 }
 
 
@@ -99,7 +83,3 @@ module "google-workspaces" {
   accounts          = var.google_workspaces_accounts
   app_settings_json = var.google_workspaces_app_settings_json
 }
-
-
-
-

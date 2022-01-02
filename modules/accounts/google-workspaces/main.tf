@@ -113,5 +113,3 @@ module "saml-app" {
   user_assignments  = local.app_user_assignments
   #  group_assignments = local.app_group_assignments 
 }
-
-

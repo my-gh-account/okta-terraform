@@ -6,15 +6,12 @@
 variable "vault_address" {
   description = "Hashicorp Vault Server Address"
   type        = string
-  default     = "http://127.0.0.1:8200"
 }
 
 variable "vault_okta_secret_path" {
   description = "The path to access the okta credentials in Vault"
   type        = string
-  default     = "secret/okta_creds"
 }
-
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # OKTA API CREDENTIALS
@@ -24,23 +21,55 @@ variable "vault_okta_secret_path" {
 variable "okta_org_name" {
   description = "The okta account to connect to"
   type        = string
-  default     = "dev-64024424"
 }
 
 variable "okta_account_url" {
   description = "base okta url"
   type        = string
-  default     = "okta.com"
 }
 
-variable "token" {
+variable "api_token" {
   type    = string
-  default = "api_token"
 }
 
 #-------------------------------------------------------------------------------------------------------------------------------------
-# GOOGLE CLOUD CONFIGURATION
+# GOOGLE PROVIDER CREDENTIALS
 # Configuration for the google cloud
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+variable "google_terraform_project" {
+  description = "Google project for terraform"
+  type        = string
+}
+
+variable "google_region" {
+  type        = string
+}
+
+variable "google_zone" {
+  type        = string
+}
+
+variable "google_customer_id" {
+  type = string
+}
+
+variable "google_impersonated_user_email" {
+  type = string
+}
+
+variable "google_credentials" {
+  type = string
+}
+
+variable "google_oauth_scopes" {
+  type = list(string)
+}
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+# GOOGLE CLOUD CONFIGURATION
+# Configuration for the Google Cloud SAML  app
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 variable "google_cloud_app_name" {
@@ -76,7 +105,7 @@ variable "google_cloud_accounts" {
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # GOOGLE  WORKSPACES CONFIGURATION
-# Configuration for Google Workspaces App
+# Configuration for Google Workspaces SAML  App
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 variable "google_workspaces_app_name" {
@@ -106,7 +135,7 @@ variable "google_workspaces_accounts" {
         calendar = true
         drive    = true
         keep     = false
-        mail     = false
+        mail     = true
         sites    = false
       }
     }
