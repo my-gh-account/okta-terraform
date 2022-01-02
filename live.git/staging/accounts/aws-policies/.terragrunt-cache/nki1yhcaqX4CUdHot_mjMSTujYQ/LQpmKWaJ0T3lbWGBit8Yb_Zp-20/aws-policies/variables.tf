@@ -4,7 +4,7 @@
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 variable "policies" {
-  type    = list(object({
+  type = list(object({
     description = string
     name        = string
     path        = string
@@ -15,4 +15,4 @@ variable "policies" {
 
 variable "aws_region" {
   type = string
-}  
+}

@@ -6,6 +6,10 @@ terraform {
   source = "github.com/my-gh-account/infrastructure-modules//slack-app"
 }
 
+dependencies {
+  paths = ["../okta-users", "../okta-groups"]
+}
+
 inputs = {
 
  app_name  = "slack"

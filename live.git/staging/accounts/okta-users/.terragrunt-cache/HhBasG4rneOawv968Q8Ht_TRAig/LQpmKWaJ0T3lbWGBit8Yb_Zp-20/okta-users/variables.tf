@@ -35,5 +35,5 @@ variable "okta_account_url" {
 }
 
 variable "okta_api_token" {
-  type    = string
+  type = string
 }

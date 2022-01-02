@@ -6,6 +6,11 @@ terraform {
   source = "github.com/my-gh-account/infrastructure-modules//google-cloud"
 }
 
+dependencies {
+  paths = ["../okta-users", "../okta-groups", "../google-workspaces"]
+}
+
+
 inputs = {
   app_name           = "gcp"
   app_display_name   = "Google Cloud"

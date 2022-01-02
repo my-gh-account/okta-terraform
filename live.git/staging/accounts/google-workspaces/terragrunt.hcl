@@ -7,9 +7,14 @@ terraform {
 
 }
 
+dependencies {
+  paths = ["../okta-users", "../okta-groups"]
+}
+
+
 inputs = {
   app_name          = "google"
-  app_display_name  = "google"
+  app_display_name  = "Google"
   okta_app          = "google"
 
   google_workspace_accounts = {

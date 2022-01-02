@@ -6,6 +6,10 @@ terraform {
   source = "github.com/my-gh-account/infrastructure-modules//aws-app"
 }
 
+dependencies {
+  paths = ["../okta-users", "../okta-groups", "../aws-policies"]
+}
+
 inputs = {
   app_name  = "aws"
   app_display_name  = "AWS"
