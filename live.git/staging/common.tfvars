@@ -1,5 +1,0 @@
-vault_address          = "http://127.0.0.1:8200"
-vault_okta_secret_path = "secret/okta_creds"
-okta_org_name          = "dev-64024424"
-okta_account_url       = "okta.com"
-api_token              = "api_token"
