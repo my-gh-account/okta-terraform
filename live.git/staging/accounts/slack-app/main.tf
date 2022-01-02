@@ -45,7 +45,7 @@ provider "okta" {
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 module "slack-app" {
-  source            = "../../../modules/accounts/slack-app/"
+  source           = "github.com/my-gh-account/infrastructure-modules//slack-app?ref=v0.0.2"
   app_name          = var.app_name
   app_display_name  = var.app_display_name
   accounts          = var.accounts

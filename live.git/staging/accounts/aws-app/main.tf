@@ -54,7 +54,7 @@ provider "okta" {
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 module "aws-app" {
-  source           = "../../../modules/accounts/aws-app/"
+  source           = "github.com/my-gh-account/infrastructure-modules//aws-app?ref=v0.0.2"
   app_name         = var.app_name
   app_display_name = var.app_display_name
   accounts         = var.accounts

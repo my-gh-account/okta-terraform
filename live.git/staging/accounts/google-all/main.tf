@@ -69,7 +69,7 @@ provider "okta" {
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 module "google-cloud" {
-  source            = "../../../modules/accounts/google-cloud/"
+  source           = "github.com/my-gh-account/infrastructure-modules//google-cloud?ref=v0.0.2"
   app_name          = var.google_cloud_app_name
   app_display_name  = var.google_cloud_app_display_name
   accounts          = var.google_cloud_accounts
@@ -77,7 +77,7 @@ module "google-cloud" {
 }
 
 module "google-workspaces" {
-  source            = "../../../modules/accounts/google-workspaces/"
+  source           = "github.com/my-gh-account/infrastructure-modules//google-workspaces?ref=v0.0.2"
   app_name          = var.google_workspaces_app_name
   app_display_name  = var.google_workspaces_app_display_name
   accounts          = var.google_workspaces_accounts
