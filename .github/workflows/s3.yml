@@ -1,4 +1,4 @@
-name: 'Terragrunt GitHub Actions'
+name: 'Terragrunt S3 Backend'
 on:
   - pull_request
 env:

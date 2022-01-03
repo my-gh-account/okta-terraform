@@ -1,4 +1,4 @@
-name: 'Terragrunt GitHub Actions'
+name: 'Terragrunt DynamoDB Backend'
 on:
   - pull_request
 env:

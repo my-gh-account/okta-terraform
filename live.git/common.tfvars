@@ -1,22 +1,22 @@
 vault_address          = "http://127.0.0.1:8200"
 vault_okta_secret_path = "secret/okta_creds"
 
-vault_github_secrets_path =  "secret/github"
+vault_github_secrets_path = "secret/github"
 
-vault_aws_secrets_secret_key_path   =  "secret/aws_secret_key"
-vault_aws_secrets_access_key_path    =  "secret/aws_access_key"
+vault_aws_secrets_secret_key_path = "secret/aws_secret_key"
+vault_aws_secrets_access_key_path = "secret/aws_access_key"
 
 vault_google_credentials_path = "secret/gcp"
 
-okta_org_name          = "dev-64024424"
-okta_account_url       = "okta.com"
-okta_api_token         = "api_token"
+okta_org_name    = "dev-64024424"
+okta_account_url = "okta.com"
+okta_api_token   = "api_token"
 
 
-aws_access_key         = "access_key"
-aws_secret_key         = "secret_key"
+aws_access_key = "access_key"
+aws_secret_key = "secret_key"
 
-github_api_token       = "api_token"
+github_api_token = "api_token"
 
 
 

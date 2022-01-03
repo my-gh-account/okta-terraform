@@ -1,4 +1,4 @@
-name: 'Terragrunt GitHub Actions'
+name: 'Terragrunt AWS Policies'
 on:
   - pull_request
 env:

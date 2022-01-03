@@ -1,4 +1,4 @@
-name: 'Terragrunt GitHub Actions'
+name: 'Terragrunt Okta Groups'
 on:
   - pull_request
 env:

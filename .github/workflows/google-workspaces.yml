@@ -1,4 +1,4 @@
-name: 'Terragrunt GitHub Actions'
+name: 'Terragrunt Google-workspaces App'
 on:
   - pull_request
 env:
