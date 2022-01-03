@@ -12,6 +12,23 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@master
+      # Static analysis of Terraform templates to spot potential security issues
+      # Marketplace: https://github.com/marketplace/actions/terraform-security-scan
+      - name: "Setup - Security Scan"
+        uses: triat/terraform-security-scan@v3.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Provides AWS credentials to Terraform
+      # By default, Terraform checks the home directory for a .aws folder with a credential file
+      # Documentation: https://docs.aws.amazon.com/ses/latest/DeveloperGuide/create-shared-credentials-file.html
+      - name: "Setup - Build AWS Credentials"
+        run: |
+          mkdir -p ~/.aws
+          echo "[default]" > ~/.aws/credentials
+          echo "aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
+          echo "aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
+
       - name: 'Terragrunt Format'
         uses: the-commons-project/terragrunt-github-actions@master
         with:
