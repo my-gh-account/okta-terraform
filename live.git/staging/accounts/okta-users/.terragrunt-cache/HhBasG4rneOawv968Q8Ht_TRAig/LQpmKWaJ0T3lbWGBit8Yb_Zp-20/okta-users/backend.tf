@@ -4,7 +4,7 @@ terraform {
     bucket         = "terraform-okta-backend-pputman"
     dynamodb_table = "terraform-okta-backend-pputman"
     encrypt        = true
-    key            = "accounts/okta-users/terraform.tfstate"
+    key            = "staging/accounts/okta-users/terraform.tfstate"
     region         = "us-east-2"
   }
 }
