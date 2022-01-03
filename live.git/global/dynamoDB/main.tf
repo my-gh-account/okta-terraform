@@ -9,7 +9,7 @@ resource "aws_dynamodb_table" "terraform_locks" {
   hash_key     = "LockID"
 
   server_side_encryption {
-    enabled  = true
+    enabled = true
   }
 
   attribute {
