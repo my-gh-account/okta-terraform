@@ -13,6 +13,12 @@ variable "vault_okta_secret_path" {
   type        = string
 }
 
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+# OKTA CREDENTIAL VARIABLES 
+# Variables for Okta credentials
+#-------------------------------------------------------------------------------------------------------------------------------------
+
 variable "okta_org_name" {
   description = "The okta account to connect to"
   type        = string
@@ -26,6 +32,11 @@ variable "okta_account_url" {
 variable "okta_api_token" {
   type = string
 }
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+# APPLICATION CONFIGURATION
+# Configuration for the saml application
+#-------------------------------------------------------------------------------------------------------------------------------------
 
 variable "app_name" {
   type    = string

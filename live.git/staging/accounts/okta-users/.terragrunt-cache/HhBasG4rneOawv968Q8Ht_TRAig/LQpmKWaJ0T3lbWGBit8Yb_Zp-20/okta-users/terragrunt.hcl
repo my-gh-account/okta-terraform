@@ -26,17 +26,17 @@ inputs = {
       login      = "sally@example.com"
       email      = "sally@example.com"
     },
-    {
-      first_name = "Test"
-      last_name  = "User"
-      login      = "test@deserthomescleaning.com"
-      email      = "test@deserthomescleaning.com"
+#    {
+#      first_name = "Test"
+#      last_name  = "User"
+#      login      = "test@deserthomescleaning.com"
+#      email      = "test@deserthomescleaning.com"
 #      custom_profile_attributes = {
 #        gcpRoles = ["roles/owner|deserthomescleaning.com|782936128004"]
 #        gwsRoles = ["_GROUPS_ADMIN_ROLE"] #, "_USER_MANAGEMENT_ADMIN_ROLE"]
 #        google    = ["deserthomescleaning.com"]
 #      }
-    },
+#    },
     {
       first_name = "Test"
       last_name  = "User"

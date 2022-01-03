@@ -13,6 +13,13 @@ variable "vault_okta_secret_path" {
   type        = string
 }
 
+variable "vault_google_credentials_path" {
+  description = "The path to access the google credentials in Vault"
+  type        = string
+}
+
+
+
 #-------------------------------------------------------------------------------------------------------------------------------------
 # OKTA API CREDENTIALS
 # Credentials for the okta api
@@ -31,9 +38,6 @@ variable "okta_account_url" {
 variable "okta_api_token" {
   type    = string
 }
-
-
-
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------
@@ -59,7 +63,10 @@ variable "google_credentials" {
 }
 
 
-
+#-------------------------------------------------------------------------------------------------------------------------------------
+# APPLICATION CONFIGURATION
+# Configuration for the saml application
+#-------------------------------------------------------------------------------------------------------------------------------------
 
 variable "app_name" {
   type    = string
@@ -84,6 +91,3 @@ variable "app_settings_json" {
   type    = map(any)
   default = {}
 }
-
-
-

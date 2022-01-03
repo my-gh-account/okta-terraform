@@ -31,6 +31,9 @@ data "vault_generic_secret" "okta_creds" {
   path = var.vault_okta_secret_path
 }
 
+data "vault_generic_secret" "google_credentials"{
+  path = var.vault_google_credentials_path
+}
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # GOOGLE CREDENTIALS
@@ -38,11 +41,12 @@ data "vault_generic_secret" "okta_creds" {
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 
+
 provider "google" {
   project     = var.google_terraform_project
   region      = var.google_region
   zone        = var.google_zone
-  credentials = file(var.google_credentials)
+  credentials = data.vault_generic_secret.google_credentials.data[var.google_credentials]
 }
 
 
@@ -58,21 +62,6 @@ provider "okta" {
 }
 
 
-
-
-
-
-
-
-
-
-
-#-------------------------------------------------------------------------------------------------------------------------------------
-# DATA FOR ASSIGNMENTS TO APP AND GCP ROLES
-# Local variables set the group app assignments (RBAC), the user app assignments (ABAC), the mapped users (role permissions in GCP)
-# and the app configuration (per app/domain settings)
-#-------------------------------------------------------------------------------------------------------------------------------------
-
 #-------------------------------------------------------------------------------------------------------------------------------------
 # OKTA ATTRIBUTE SEARCH
 # Data source searches for the GcpRoles attribute and pulls users out
@@ -86,6 +75,11 @@ data "okta_users" "gcpUsers" {
   }
 }
 
+#-------------------------------------------------------------------------------------------------------------------------------------
+# DATA FOR ASSIGNMENTS TO APP AND GCP ROLES
+# Local variables set the group app assignments (RBAC), the user app assignments (ABAC), the mapped users (role permissions in GCP)
+# and the app configuration (per app/domain settings)
+#-------------------------------------------------------------------------------------------------------------------------------------
 
 locals {
 

@@ -17,7 +17,7 @@ inputs = {
   app_display_name  = "Google"
   okta_app          = "google"
 
-  google_workspace_accounts = {
+  accounts = {
     "deserthomescleaning.com" = {
       app_links_json = {
         accounts = true

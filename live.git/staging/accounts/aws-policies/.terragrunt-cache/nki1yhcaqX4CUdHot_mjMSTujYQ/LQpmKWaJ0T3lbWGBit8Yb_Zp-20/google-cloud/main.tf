@@ -17,11 +17,50 @@ terraform {
   }
 }
 
+
 #-------------------------------------------------------------------------------------------------------------------------------------
-# DATA FOR ASSIGNMENTS TO APP AND GCP ROLES
-# Local variables set the group app assignments (RBAC), the user app assignments (ABAC), the mapped users (role permissions in GCP)
-# and the app configuration (per app/domain settings)
+# VAULT VARIABLES 
+# Refers to variables for Hashicorp Vault in variables.tf
 #-------------------------------------------------------------------------------------------------------------------------------------
+
+provider "vault" {
+  address = var.vault_address
+}
+
+data "vault_generic_secret" "okta_creds" {
+  path = var.vault_okta_secret_path
+}
+
+data "vault_generic_secret" "google_credentials"{
+  path = var.vault_google_credentials_path
+}
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+# GOOGLE CREDENTIALS
+# Google api token file
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+provider "google" {
+  project     = var.google_terraform_project
+  region      = var.google_region
+  zone        = var.google_zone
+  credentials = data.vault_generic_secret.google_credentials.data[var.google_credentials]
+}
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+# OKTA CREDENTIALS
+# allows login to okta, api_token pointing here to data source created for hashicorp vault secure secret storage
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+provider "okta" {
+  org_name  = var.okta_org_name
+  base_url  = var.okta_account_url
+  api_token = data.vault_generic_secret.okta_creds.data[var.okta_api_token]
+}
+
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # OKTA ATTRIBUTE SEARCH
@@ -36,27 +75,21 @@ data "okta_users" "gcpUsers" {
   }
 }
 
-
-data "okta_groups" "okta_groups" {}
-
+#-------------------------------------------------------------------------------------------------------------------------------------
+# DATA FOR ASSIGNMENTS TO APP AND GCP ROLES
+# Local variables set the group app assignments (RBAC), the user app assignments (ABAC), the mapped users (role permissions in GCP)
+# and the app configuration (per app/domain settings)
+#-------------------------------------------------------------------------------------------------------------------------------------
 
 locals {
 
   cloud_app_configuration = { for name, account in var.accounts : name => merge(account, { "app_display_name" = var.app_display_name, app_settings_json = var.app_settings_json }) }
 
-  #  cloud_app_groups            = [for group in data.okta_groups.okta_groups.groups : merge(group, { "role" = element(split("-", group.name), 3), "account_name" = element(split("-", group.name), 2) }) if(var.app_name == element(split("-", group.name), 1))]
-  #  cloud_app_group_assignments = [for group in local.app_groups : group if contains(keys(var.accounts), group.account_name)]
-
-
-
   cloud_app_users            = flatten([for user in data.okta_users.gcpUsers.users : merge(user, jsondecode(user.custom_profile_attributes))])
   cloud_app_user_assignments = flatten([for user in local.cloud_app_users : distinct([for role in user.gcpRoles : { "user" = user.email, "account_name" = element(split("|", role), 1), "user_id" = user.id }])])
+
   cloud_role_assignments     = flatten([for user in local.cloud_app_users : [for role in user.gcpRoles : { "project" = element(split("|", role), 2), "account" = element(split("|", role), 1), "role" = element(split("|", role), 0), "user" = "user:${user.email}" } if contains(keys(var.accounts), element(split("|", role), 1))]])
-
-
-
 }
-
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------
@@ -69,7 +102,6 @@ resource "google_project_iam_member" "rolemapping" {
   member   = each.value.user
   role     = each.value.role
   project  = each.value.project
-  # depends_on = [module.saml-app]
 }
 
 
@@ -77,12 +109,11 @@ resource "google_project_iam_member" "rolemapping" {
 # SAML APP MODULE
 # Passes the app and assignment data to the saml app module for creation/assignment
 #-------------------------------------------------------------------------------------------------------------------------------------
-#
+
 module "saml-app" {
   source            = "../saml-app/"
   accounts          = var.accounts
   okta_appname      = var.okta_appname
   app_configuration = local.cloud_app_configuration
   user_assignments  = local.cloud_app_user_assignments
-  #  group_assignments = local.cloud_app_group_assignments
 }
