@@ -21,21 +21,6 @@ github_api_token = "api_token"
 vault_google_credentials_path  = "secret/gcp"
 
 google_credentials             = "credentials"
-vault_github_secrets_path =  "secret/github"
-
-vault_aws_secrets_secret_key_path = "secret/aws_secret_key"
-vault_aws_secrets_access_key_path = "secret/aws_access_key"
-
-okta_org_name    = "dev-64024424"
-okta_account_url = "okta.com"
-okta_api_token   = "api_token"
-
-
-aws_access_key = "access_key"
-aws_secret_key = "secret_key"
-
-github_api_token = "api_token"
-
 
 
 google_customer_id             = "C02ku8l6j"
