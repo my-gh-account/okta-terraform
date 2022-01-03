@@ -1,5 +1,3 @@
-.terraform*
-*.tfstate*
-*creds*
-*secrets*
-.terra*
+.terraform
+.terragrunt-cache
+*.tfstate
