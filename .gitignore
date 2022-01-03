@@ -1,11 +1,3 @@
-<<<<<<< HEAD
 *.tfstate
 .terraform
 .terragrunt-cache
-=======
-.terraform*
-*.tfstate*
-*creds*
-*secrets*
-.terra*
->>>>>>> 1bb0e1ef8b7df77f644d0298a50e331551ee75e8
