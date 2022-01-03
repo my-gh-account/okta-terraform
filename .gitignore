@@ -2,4 +2,4 @@
 *.tfstate*
 *creds*
 *secrets*
-.terra*
+.terragrunt-cache
