@@ -13,7 +13,6 @@ dependencies {
 
 
 inputs = {
-  app_name          = "google"
   app_display_name  = "Google"
   okta_app          = "google"
 
