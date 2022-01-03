@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  terraform-plan:
+  terragrunt-plan:
     name: "Terraform Plan"
     runs-on: ubuntu-latest
     steps:
@@ -30,21 +30,48 @@ jobs:
           echo "[default]" > ~/.aws/credentials
           echo "aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
           echo "aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
-      # Downloads a specific version of Terraform CLI and adds it to PATH
-      # Marketplace: https://github.com/marketplace/actions/hashicorp-setup-terraform
-      - name: "Setup - Terraform CLI"
+      - name: 'Terragrunt Format'
         uses: the-commons-project/terragrunt-github-actions@master
-
-      # Init pulls credentials from the .aws/credentials file by default
-      - name: "Run - Terraform Init"
-        run: terraform init -input=false
-
-      # The id value is used for reference in the comment step via "steps.plan.outputs.stdout"
-      # Note: Color is disabled to prevent messy characters from appearing in the pull request comment
-      - name: "Run - Terraform Plan"
-        id: plan
-        run: terraform plan -input=false -no-color
-
+        with:
+          tf_actions_version: ${{ env.tf_version }}
+          tg_actions_version: ${{ env.tg_version }}
+          tf_actions_binary: 'terraform'
+          tf_actions_subcommand: 'fmt'
+          tf_actions_working_dir: ${{ env.tf_working_dir }}
+          tf_actions_comment: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'Terragrunt Init'
+        uses: the-commons-project/terragrunt-github-actions@master
+        with:
+          tf_actions_version: ${{ env.tf_version }}
+          tg_actions_version: ${{ env.tg_version }}
+          tf_actions_subcommand: 'init'
+          tf_actions_working_dir: ${{ env.tf_working_dir }}
+          tf_actions_comment: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'Terragrunt Validate'
+        uses: the-commons-project/terragrunt-github-actions@master
+        with:
+          tf_actions_version: ${{ env.tf_version }}
+          tg_actions_version: ${{ env.tg_version }}
+          tf_actions_binary: 'terraform'
+          tf_actions_subcommand: 'validate'
+          tf_actions_working_dir: ${{ env.tf_working_dir }}
+          tf_actions_comment: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'Terragrunt Plan'
+        uses: the-commons-project/terragrunt-github-actions@master
+        with:
+          tf_actions_version: ${{ env.tf_version }}
+          tg_actions_version: ${{ env.tg_version }}
+          tf_actions_subcommand: 'plan'
+          tf_actions_working_dir: ${{ env.tf_working_dir }}
+          tf_actions_comment: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # Submit a comment with the plan output to the pull request
       - name: "Run - Terraform Comment"
         uses: actions/github-script@v5.0.0
