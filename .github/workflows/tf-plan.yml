@@ -33,7 +33,7 @@ jobs:
       # Downloads a specific version of Terraform CLI and adds it to PATH
       # Marketplace: https://github.com/marketplace/actions/hashicorp-setup-terraform
       - name: "Setup - Terraform CLI"
-        uses: hashicorp/setup-terraform@v1.2.1
+        uses: the-commons-project/terragrunt-github-actions@master
 
       # Init pulls credentials from the .aws/credentials file by default
       - name: "Run - Terraform Init"
