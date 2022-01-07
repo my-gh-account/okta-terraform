@@ -7,13 +7,15 @@ terraform {
 }
 
 inputs = {
-  namespace = "Vault" 
-  root_device_type = ["ebs"]
-  virtualization_type = ["hvm"]
-  instance_type = "t2.micro"
+
   vpc_id = dependency.public_vpc.outputs.external_vpc
   instance_subnet_id = dependency.public_vpc.outputs.external_subnet
   security_groups = dependency.public_vpc.outputs.ssh_security_group
+
+
+
+  namespace = "Vault" 
+  instance_type = "m4.large"
   PUBLIC_KEY_PATH = "~/.ssh/id_rsa.pub"
   ami_id = "ami-0d85d26c53cbaccf2"
 }
