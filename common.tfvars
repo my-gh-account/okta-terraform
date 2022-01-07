@@ -7,6 +7,8 @@ vault_aws_secrets_secret_key_path = "secret/aws_secret_key"
 vault_aws_secrets_access_key_path = "secret/aws_access_key"
 
 vault_google_credentials_path = "secret/gcp"
+vault_google_workspace_password_path = "secret/workspace_pass"
+
 
 okta_org_name    = "dev-64024424"
 okta_account_url = "okta.com"
@@ -19,7 +21,7 @@ aws_secret_key = "secret_key"
 github_api_token = "api_token"
 
 
-
+google_workspace_pass          = "workspace_pass"
 google_credentials             = "credentials"
 google_customer_id             = "C02ku8l6j"
 google_impersonated_user_email = "patrick@deserthomescleaning.com"

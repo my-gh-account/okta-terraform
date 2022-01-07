@@ -48,7 +48,7 @@ policies = [
       })
     },
     {
-      name        = "test_policy3"
+      name        = "test_policy99"
       description = "a testing policy"
       path        = "/"
       tags = {
@@ -69,7 +69,7 @@ policies = [
       })
     },
     {
-      name        = "test_policy99"
+      name        = "test_policy3"
       description = "a testing policy"
       path        = "/"
       tags = {
