@@ -3,7 +3,8 @@ include "root" {
 }
 
 terraform {
-  source = "github.com/my-gh-account/infrastructure-modules//terraform-vpc"
+  source = "github.com/my-gh-account/infrastructure-modules//aws-services/terraform-vpc"
+
 }
 
 inputs = {

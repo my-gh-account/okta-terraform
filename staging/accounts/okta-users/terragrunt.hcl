@@ -3,7 +3,7 @@ include "root" {
 }
 
 terraform {
-  source = "github.com/my-gh-account/infrastructure-modules//okta-users"
+  source = "github.com/my-gh-account/infrastructure-modules//accounts/okta-users"
 }
 
 inputs = {
