@@ -15,7 +15,7 @@ inputs = {
 
 
   namespace = "Vault" 
-  instance_type = "m4.large"
+  instance_type = "t2.micro"
   PUBLIC_KEY_PATH = "~/.ssh/id_rsa.pub"
   ami_id = "ami-0d85d26c53cbaccf2"
 }
