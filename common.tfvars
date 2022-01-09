@@ -1,14 +1,12 @@
-vault_address          = "https://18.118.90.76:8200"
-
-vault_okta_secret_path = "secret/okta_creds"
-
+vault_address             = "https://18.118.90.76:8200"
+vault_okta_secret_path    = "secret/okta_creds"
 vault_github_secrets_path = "secret/github"
 
 backend_bucket = "terraform-okta-backend-pputman"
 backend_key    = "staging/vault-aws/vault-keys/terraform.tfstate"
 
 
-vault_google_credentials_path = "secret/gcp"
+vault_google_credentials_path        = "secret/gcp"
 vault_google_workspace_password_path = "secret/workspace_pass"
 
 
@@ -16,12 +14,10 @@ okta_org_name    = "dev-64024424"
 okta_account_url = "okta.com"
 okta_api_token   = "api_token"
 
-
 aws_access_key = "access_key"
 aws_secret_key = "secret_key"
 
 github_api_token = "api_token"
-
 
 google_workspace_pass          = "workspace_pass"
 google_credentials             = "credentials"
