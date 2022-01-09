@@ -3,7 +3,7 @@ include "root" {
 }
 
 terraform {
-  source = "github.com/my-gh-account/infrastructure-modules//google-workspaces"
+  source = "github.com/my-gh-account/infrastructure-modules//accounts/google-workspaces"
 
 }
 

@@ -3,7 +3,7 @@ include "root" {
 }
 
 terraform {
-  source = "github.com/my-gh-account/infrastructure-modules//aws-policies"
+  source = "github.com/my-gh-account/infrastructure-modules//accounts/aws-policies"
 }
 
 inputs = {
