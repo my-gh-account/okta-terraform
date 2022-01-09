@@ -7,6 +7,7 @@ env:
   tf_working_dir: './global/s3/' 
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
 jobs:
   terragrunt:
     name: 'Terragrunt'
