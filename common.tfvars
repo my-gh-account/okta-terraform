@@ -3,7 +3,7 @@ vault_okta_secret_path    = "secret/okta_creds"
 vault_github_secrets_path = "secret/github"
 
 backend_bucket = "terraform-okta-backend-pputman"
-backend_key    = "staging/vault-aws/vault-keys/terraform.tfstate"
+backend_key    = "staging/public-vpc/vault-keys/terraform.tfstate"
 
 
 vault_google_credentials_path        = "secret/gcp"
